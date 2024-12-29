@@ -1,0 +1,49 @@
+{
+	"name": "@acme/db",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./src/index.ts"
+		},
+		"./client": {
+			"types": "./dist/client.d.ts",
+			"default": "./src/client.ts"
+		},
+		"./schema": {
+			"types": "./dist/schema.d.ts",
+			"default": "./src/schema.ts"
+		}
+	},
+	"license": "MIT",
+	"scripts": {
+		"build": "tsc",
+		"clean": "git clean -xdf .cache .turbo dist node_modules",
+		"dev": "bun tsc --watch",
+		"format": "biome format .",
+		"format:fix": "biome format --write .",
+		"lint": "eslint",
+		"generate": "bun with-env drizzle-kit generate",
+		"push": "bun with-env drizzle-kit push",
+		"seed": "bun with-env ./src/seed.ts",
+		"studio": "bun with-env drizzle-kit studio",
+		"typecheck": "tsc --noEmit --emitDeclarationOnly false",
+		"with-env": "bun --env-file=../../.env --"
+	},
+	"dependencies": {
+		"@libsql/client": "^0.14.0",
+		"drizzle-orm": "^0.38.3",
+		"drizzle-zod": "^0.5.1",
+		"zod": "^3.24.1"
+	},
+	"devDependencies": {
+		"@acme/tsconfig": "workspace:*",
+		"@types/bun": "latest",
+		"drizzle-kit": "^0.28.1"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"name": "web",
+	"type": "module",
+	"scripts": {
+		"dev": "vinxi dev",
+		"build": "vinxi build",
+		"start": "vinxi start"
+	},
+	"devDependencies": {
+		"@acme/tailwind-config": "workspace:*",
+		"@types/bun": "latest",
+		"@types/react": "^19.0.2",
+		"@types/react-dom": "^19.0.2",
+		"@vitejs/plugin-react": "^4.3.4",
+		"autoprefixer": "^10.4.20",
+		"postcss": "^8.4.49",
+		"vite-tsconfig-paths": "^5.1.4"
+	},
+	"peerDependencies": {
+		"typescript": "^5.7.2"
+	},
+	"dependencies": {
+		"@tanstack/react-router": "^1.92.6",
+		"@tanstack/start": "^1.92.6",
+		"backend-client": "workspace:*",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"vinxi": "^0.5.1"
+	}
+}

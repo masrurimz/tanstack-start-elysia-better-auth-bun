@@ -1,0 +1,22 @@
+{
+	"name": "backend",
+	"version": "0.0.0",
+	"main": "./src/index.ts",
+	"scripts": {
+		"build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.ts",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "bun with-env --watch src/index.ts",
+		"with-env": "bun --env-file=../../.env --bun"
+	},
+	"dependencies": {
+		"@acme/db": "workspace:*",
+		"@elysiajs/cors": "^1.2.0",
+		"@elysiajs/opentelemetry": "^1.2.0",
+		"@elysiajs/swagger": "^1.2.0",
+		"elysia": "latest"
+	},
+	"devDependencies": {
+		"bun-types": "latest"
+	},
+	"module": "src/index.js"
+}
