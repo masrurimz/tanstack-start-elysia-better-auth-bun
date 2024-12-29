@@ -13,5 +13,6 @@
 	},
 	"[ignore]": {
 		"editor.defaultFormatter": "foxundermoon.shell-format"
-	}
+	},
+	"conventionalCommits.scopes": ["auth"]
 }

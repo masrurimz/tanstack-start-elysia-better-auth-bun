@@ -6,6 +6,7 @@ import { note } from './note'
 import { user } from './user'
 import { countRoutes } from './count'
 import { pokemonRoutes } from './pokemon'
+import { auth, authService, betterAuthView } from './auth'
 
 const app = new Elysia()
 	.use(cors())
@@ -16,6 +17,7 @@ const app = new Elysia()
 
 		console.error(error)
 	})
+	.use(authService)
 	.get('/', ({ path }) => `Hello Elysia from ${path}`)
 	.get('health', () => 'OK')
 	.use(note)
@@ -25,5 +27,6 @@ const app = new Elysia()
 	.listen(3001)
 
 export type App = typeof app
+export { auth }
 
 console.log(`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`)

@@ -1,7 +1,7 @@
 import { Elysia, t } from 'elysia'
 import { db } from '@acme/db/client'
 import { eq, or, sql, desc } from 'drizzle-orm'
-import { pokemon, votes } from '@acme/db/schema'
+import { pokemon, vote as votes } from '@acme/db/schema'
 
 function getTwoRandomNumbers(max: number) {
 	const first = Math.floor(Math.random() * max) + 1

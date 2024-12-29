@@ -2,7 +2,7 @@ import { createClient } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
 import { migrate } from 'drizzle-orm/libsql/migrator'
 
-import { notes, passwords, pokemon, users } from './schema'
+import { account, note, pokemon, user } from './schema'
 
 async function getAllPokemon() {
 	const query = `
@@ -57,21 +57,36 @@ async function seed() {
 		migrationsFolder: `${process.env.ROOT_DIR}/packages/db/migrations`,
 	})
 
-	let user = await db.insert(users).values({ id: 1, email: 'rachel@remix.run' }).returning().get()
+	const newUser = await db
+		.insert(user)
+		.values({
+			email: 'rachel@remix.run',
+			createdAt: new Date(),
+			updatedAt: new Date(),
+			emailVerified: true,
+			name: 'Rachel',
+		})
+		.returning()
+		.get()
 
-	let hash = await Bun.password.hash('racheliscool')
-	await db.insert(passwords).values({ hash, userId: user.id })
+	const hash = await Bun.password.hash('racheliscool')
+	await db.insert(account).values({
+		userId: newUser.id,
+		accountId: '',
+		providerId: '',
+		password: hash,
+	})
 
-	await db.insert(notes).values([
+	await db.insert(note).values([
 		{
 			title: 'My first note',
 			body: 'This is my first note',
-			userId: user.id,
+			userId: newUser.id,
 		},
 		{
 			title: 'My second note',
 			body: 'This is my second note',
-			userId: user.id,
+			userId: newUser.id,
 		},
 	])
 
