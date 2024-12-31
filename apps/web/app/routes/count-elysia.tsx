@@ -2,6 +2,7 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { api } from 'backend-client'
 import { useEffect } from 'react'
+import { Button } from '../components/ui/button'
 
 export const Route = createFileRoute('/count-elysia')({
 	component: Home,
@@ -26,9 +27,5 @@ function Home() {
 		router.invalidate()
 	}
 
-	return (
-		<button type="button" onClick={handleIncrement}>
-			Add 1 to {count}?
-		</button>
-	)
+	return <Button onClick={handleIncrement}>Add 1 to {count}?</Button>
 }

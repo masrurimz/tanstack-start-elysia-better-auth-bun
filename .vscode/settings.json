@@ -14,5 +14,6 @@
 	"[ignore]": {
 		"editor.defaultFormatter": "foxundermoon.shell-format"
 	},
-	"conventionalCommits.scopes": ["auth"]
+	"conventionalCommits.scopes": ["auth", "ui"],
+	"javascript.preferences.importModuleSpecifier": "non-relative"
 }
