@@ -1,22 +1,22 @@
 {
-	"name": "bun-monorepo",
-	"version": "0.0.1",
-	"description": "Elysia Backend + React Native + Next.js",
-	"workspaces": ["apps/*", "packages/*", "tooling/*"],
-	"scripts": {
-		"dev": "bun --filter backend --filter web dev",
-		"typecheck": "bunx --bun tsc",
-		"lint": "biome lint .",
-		"lint:fix": "biome lint --apply .",
-		"format": "biome format .",
-		"format:fix": "biome format --write .",
-		"db:generate": "cd packages/db && bun run generate",
-		"db:push": "cd packages/db && bun run push",
-		"db:seed": "cd packages/db && bun run seed",
-		"db:studio": "cd packages/db && bun run studio"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.9.4"
-	},
-	"trustedDependencies": ["@biomejs/biome", "@parcel/watcher"]
+  "name": "bun-monorepo",
+  "version": "0.0.1",
+  "description": "Elysia Backend + React Native + Next.js",
+  "workspaces": ["apps/*", "packages/*", "tooling/*"],
+  "scripts": {
+    "dev": "bun --filter backend --filter web dev",
+    "typecheck": "bunx --bun tsc",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --apply .",
+    "format": "biome format .",
+    "format:fix": "biome format --write .",
+    "db:generate": "cd packages/db && bun run generate",
+    "db:push": "cd packages/db && bun run push",
+    "db:seed": "cd packages/db && bun run seed",
+    "db:studio": "cd packages/db && bun run studio"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4"
+  },
+  "trustedDependencies": ["@biomejs/biome", "@parcel/watcher", "esbuild", "protobufjs", "sharp"]
 }

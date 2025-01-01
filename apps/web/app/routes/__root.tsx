@@ -1,4 +1,7 @@
-import { Outlet, ScrollRestoration, createRootRoute } from '@tanstack/react-router'
+import type { QueryClient } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Outlet, ScrollRestoration, createRootRoute, createRootRouteWithContext } from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Meta, Scripts } from '@tanstack/start'
 import type { ReactNode } from 'react'
 import { DefaultCatchBoundary } from '../components/default-catch-boundary'
@@ -6,7 +9,9 @@ import { NotFound } from '../components/not-found'
 import { ThemeProvider } from '../components/theme-provider'
 import globalCss from '../global.css?url'
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+	queryClient: QueryClient
+}>()({
 	head: () => ({
 		meta: [
 			{
@@ -50,6 +55,8 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 			<body>
 				<ThemeProvider>{children}</ThemeProvider>
 				<ScrollRestoration />
+				<TanStackRouterDevtools position="bottom-right" />
+				<ReactQueryDevtools buttonPosition="bottom-left" />
 				<Scripts />
 			</body>
 		</html>

@@ -132,7 +132,7 @@ export function VoteFallback() {
 			{[1, 2].map((i) => (
 				<div key={i} className="flex flex-col items-center gap-4">
 					<div className="w-64 h-64 rounded-lg animate-pulse bg-gray-800/10" />
-					<div className="flex flex-col items-center justify-center space-y-2 text-center">
+					<div className="flex flex-col items-center justify-center text-center space-y-2">
 						<div className="w-16 h-6 rounded animate-pulse bg-gray-800/10" />
 						<div className="w-32 h-8 rounded animate-pulse bg-gray-800/10" />
 						<div className="w-24 h-12 rounded animate-pulse bg-gray-800/10" />

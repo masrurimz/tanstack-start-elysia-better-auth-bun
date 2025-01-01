@@ -44,7 +44,7 @@ function Content({
 			{results?.map((pokemon, index) => (
 				<div
 					key={pokemon.dexId}
-					className="flex items-center gap-6 p-6 transition-shadow rounded-lg shadow bg-gray-800/40 hover:shadow-md"
+					className="flex items-center p-6 rounded-lg shadow gap-6 transition-shadow bg-gray-800/40 hover:shadow-md"
 				>
 					<div className="w-8 text-2xl font-bold text-gray-400">#{index + 1}</div>
 					<PokemonSprite dexId={pokemon.dexId} className="w-20 h-20" />
@@ -68,7 +68,7 @@ function ResultsFallback() {
 	return (
 		<>
 			{[...Array(10)].map((_, i) => (
-				<div key={i} className="flex items-center gap-6 p-6 rounded-lg shadow animate-pulse bg-gray-800/40">
+				<div key={i} className="flex items-center p-6 rounded-lg shadow gap-6 animate-pulse bg-gray-800/40">
 					<div className="w-8 h-8 rounded bg-gray-700/40" />
 					<div className="w-20 h-20 rounded bg-gray-700/40" />
 					<div className="flex-grow">
