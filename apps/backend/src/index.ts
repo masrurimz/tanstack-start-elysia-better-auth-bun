@@ -2,11 +2,12 @@ import cors from '@elysiajs/cors'
 import { opentelemetry } from '@elysiajs/opentelemetry'
 import swagger from '@elysiajs/swagger'
 import { Elysia } from 'elysia'
-import { note } from './note'
-import { user } from './user'
+import { type auth, authService } from './auth'
 import { countRoutes } from './count'
+import { messageService } from './message'
+import { note } from './note'
 import { pokemonRoutes } from './pokemon'
-import { auth, authService, betterAuthView } from './auth'
+import { user } from './user'
 
 const app = new Elysia()
 	.use(cors())
@@ -20,6 +21,7 @@ const app = new Elysia()
 	.use(authService)
 	.get('/', ({ path }) => `Hello Elysia from ${path}`)
 	.get('health', () => 'OK')
+	.use(messageService)
 	.use(note)
 	.use(user)
 	.use(countRoutes)
@@ -27,6 +29,6 @@ const app = new Elysia()
 	.listen(3001)
 
 export type App = typeof app
-export { auth }
+export type Session = typeof auth.$Infer.Session
 
 console.log(`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`)

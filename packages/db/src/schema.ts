@@ -103,8 +103,9 @@ export const verification = sqliteTable('verification', {
 export type User = typeof user.$inferSelect
 export type NewUser = typeof user.$inferInsert
 
-export const usersRelations = relations(user, ({ many, one }) => ({
+export const usersRelations = relations(user, ({ many }) => ({
 	notes: many(note),
+	messages: many(message),
 }))
 
 export const note = sqliteTable('notes', {
@@ -181,5 +182,38 @@ export const pokemonRelation = relations(pokemon, ({ many }) => ({
 	}),
 	votesAgainst: many(vote, {
 		relationName: 'votesAgainst',
+	}),
+}))
+
+export const message = sqliteTable('messages', {
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => Bun.randomUUIDv7()),
+	content: text('content').notNull(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id, {
+			onDelete: 'cascade',
+		}),
+	createdAt: integer('created_at', {
+		mode: 'timestamp',
+	})
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`),
+	updatedAt: integer('updated_at', {
+		mode: 'timestamp',
+	})
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`)
+		.$onUpdateFn(() => new Date()),
+})
+
+export type Message = typeof message.$inferSelect
+export type NewMessage = typeof message.$inferInsert
+
+export const messageRelation = relations(message, ({ one }) => ({
+	user: one(user, {
+		fields: [message.userId],
+		references: [user.id],
 	}),
 }))

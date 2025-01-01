@@ -1,0 +1,171 @@
+import { db } from '@acme/db/client'
+import { type NewMessage, type User, message } from '@acme/db/schema'
+import { eq } from 'drizzle-orm'
+import { Elysia, error, t } from 'elysia'
+import { userMiddleware } from './auth'
+import { getUserId } from './user'
+
+// Message models
+const messageSchema = {
+	content: t.String({
+		minLength: 1,
+		description: 'Message content',
+	}),
+}
+
+const messageModel = t.Object(messageSchema, {
+	description: 'Message payload',
+})
+
+const messageResponseModel = t.Object(
+	{
+		id: t.String(),
+		content: t.String(),
+		userId: t.String(),
+		createdAt: t.Date(),
+		updatedAt: t.Date(),
+		user: t.Object({
+			id: t.String(),
+			name: t.String(),
+			email: t.String(),
+			image: t.Optional(t.Nullable(t.String())),
+		}),
+	},
+	{
+		description: 'Message response with user details',
+	},
+)
+
+// Message service class
+class Message {
+	async get() {
+		return db.query.message.findMany({
+			with: { user: true },
+		})
+	}
+
+	async getById(id: string) {
+		return db.query.message.findFirst({
+			where: eq(message.id, id),
+			with: { user: true },
+		})
+	}
+
+	async create(userId: string, content: string) {
+		return db.insert(message).values({ content, userId }).returning()
+	}
+
+	async update(id: string, content: string) {
+		return db.update(message).set({ content, updatedAt: new Date() }).where(eq(message.id, id)).returning()
+	}
+
+	async delete(id: string) {
+		return db.delete(message).where(eq(message.id, id)).returning()
+	}
+
+	async validateAuth(user: Pick<User, 'id'> | null) {
+		if (!user?.id) {
+			throw error(401, 'Unauthorized')
+		}
+		return user
+	}
+
+	async validateOwnership(id: string, userId: string) {
+		const msg = await this.getById(id)
+		if (!msg) {
+			throw error(404, 'Message not found')
+		}
+		if (msg.userId !== userId) {
+			throw error(403, 'Unauthorized')
+		}
+		return msg
+	}
+}
+
+// Message routes
+const messageService = new Elysia({ prefix: '/messages' })
+	.model({ message: messageModel })
+	.derive(({ request }) => userMiddleware(request))
+	.decorate('message', new Message())
+
+	// Public routes
+	.get('/', ({ message }) => message.get(), {
+		response: t.Array(messageResponseModel),
+		detail: {
+			summary: 'Get all messages',
+			tags: ['Messages'],
+			description: 'Retrieve all messages with user information',
+		},
+	})
+
+	// Protected routes
+	.guard(
+		{
+			detail: {
+				description: 'Requires authentication',
+				security: [{ BearerAuth: [] }],
+			},
+		},
+		(app) =>
+			app
+				.use(getUserId)
+				.post(
+					'/',
+					async ({ body: { content }, user, message }) => {
+						const validUser = await message.validateAuth(user)
+						return message.create(validUser.id, content)
+					},
+					{
+						body: 'message',
+						response: t.Array(messageModel),
+						detail: {
+							summary: 'Create a new message',
+							tags: ['Messages'],
+						},
+					},
+				)
+				.guard(
+					{
+						detail: {
+							description: 'Requires message ownership',
+						},
+					},
+					(app) =>
+						app
+							.patch(
+								'/:id',
+								async ({ params: { id }, body: { content }, user, message }) => {
+									const validUser = await message.validateAuth(user)
+									await message.validateOwnership(id, validUser.id)
+									return message.update(id, content)
+								},
+								{
+									params: t.Object({ id: t.String() }),
+									body: 'message',
+									response: t.Array(messageModel),
+									detail: {
+										summary: 'Update a message',
+										tags: ['Messages'],
+									},
+								},
+							)
+							.delete(
+								'/:id',
+								async ({ params: { id }, user, message }) => {
+									const validUser = await message.validateAuth(user)
+									await message.validateOwnership(id, validUser.id)
+									return message.delete(id)
+								},
+								{
+									params: t.Object({ id: t.String() }),
+									response: t.Array(messageModel),
+									detail: {
+										summary: 'Delete a message',
+										tags: ['Messages'],
+									},
+								},
+							),
+				),
+	)
+
+export { messageService }
