@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 const filePath = 'count.txt'
 
 async function readCount() {
-	return parseInt(await fs.promises.readFile(filePath, 'utf-8').catch(() => '0'))
+	return Number.parseInt(await fs.promises.readFile(filePath, 'utf-8').catch(() => '0'))
 }
 
 const getCount = createServerFn({

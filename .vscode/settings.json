@@ -15,5 +15,10 @@
 		"editor.defaultFormatter": "foxundermoon.shell-format"
 	},
 	"conventionalCommits.scopes": ["auth", "ui"],
-	"javascript.preferences.importModuleSpecifier": "non-relative"
+	"javascript.preferences.importModuleSpecifier": "non-relative",
+	"editor.codeActionsOnSave": {
+		"quickfix.biome": "explicit",
+		"source.organizeImports.biome": "explicit",
+		"source.fixAll": "explicit"
+	}
 }

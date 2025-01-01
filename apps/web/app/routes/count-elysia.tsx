@@ -18,7 +18,7 @@ function Home() {
 
 	useEffect(() => {
 		api.health.get().then((res) => {
-			console.log('hello from eden: ' + res.data)
+			console.log(`hello from eden: ${res.data}`)
 		})
 	}, [])
 
