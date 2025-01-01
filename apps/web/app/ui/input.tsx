@@ -1,3 +1,4 @@
+import { Eye, EyeOff } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '~/ui/utils'
@@ -22,4 +23,35 @@ const Input = React.forwardRef<
 })
 Input.displayName = 'Input'
 
-export { Input }
+const InputHidable = React.forwardRef<
+	HTMLInputElement,
+	React.ComponentProps<'input'> & { variant?: 'default' | 'error' | 'success' }
+>((props, ref) => {
+	const [isVisible, setIsVisible] = React.useState<boolean>(false)
+
+	const toggleVisibility = () => setIsVisible((prevState) => !prevState)
+
+	return (
+		<div className="space-y-2">
+			<div className="relative">
+				<Input {...props} className="pe-9" type={isVisible ? 'text' : 'password'} ref={ref} />
+				<button
+					className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 ring-offset-background transition-shadow hover:text-foreground focus-visible:border focus-visible:border-ring focus-visible:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+					type="button"
+					onClick={toggleVisibility}
+					aria-label={isVisible ? 'Hide password' : 'Show password'}
+					aria-pressed={isVisible}
+				>
+					{isVisible ? (
+						<EyeOff size={16} strokeWidth={2} aria-hidden="true" />
+					) : (
+						<Eye size={16} strokeWidth={2} aria-hidden="true" />
+					)}
+				</button>
+			</div>
+		</div>
+	)
+})
+InputHidable.displayName = 'InputHidable'
+
+export { Input, InputHidable }

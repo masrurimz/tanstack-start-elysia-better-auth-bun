@@ -1,5 +1,6 @@
-import { Outlet, createFileRoute, useRouter } from '@tanstack/react-router'
+import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { api } from 'backend-client'
+import { authClient } from '~/infra/auth/auth-client'
 
 export const Route = createFileRoute('/_auth')({
 	component: Home,
@@ -10,14 +11,14 @@ export const Route = createFileRoute('/_auth')({
 })
 
 function Home() {
-	const router = useRouter()
+	const session = authClient.useSession()
 
 	return (
 		<>
-			<div className="container relative flex-col items-center justify-center hidden h-screen md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-				<div className="relative flex-col hidden h-full p-10 text-white bg-muted lg:flex dark:border-r">
+			<div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+				<div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
 					<div className="absolute inset-0 bg-zinc-900" />
-					<div className="relative z-20 flex items-center text-lg font-medium">
+					<div className="relative z-20 flex items-center font-medium text-lg">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 24 24"
@@ -26,7 +27,7 @@ function Home() {
 							strokeWidth="2"
 							strokeLinecap="round"
 							strokeLinejoin="round"
-							className="w-6 h-6 mr-2"
+							className="mr-2 h-6 w-6"
 							aria-label="Acme Inc Logo"
 						>
 							<title>Acme Inc Logo</title>

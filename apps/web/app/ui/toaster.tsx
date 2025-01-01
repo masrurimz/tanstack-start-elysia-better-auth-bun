@@ -1,4 +1,4 @@
-import { useToast } from '~/app/controllers/use-toast'
+import { useToast } from '~/controllers/use-toast'
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from '~/ui/toast'
 
 export function Toaster() {

@@ -5,11 +5,9 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { useToast } from '~/controllers/use-toast'
 import { authClient } from '~/infra/auth/auth-client'
-
 import { Button } from '~/ui/button'
-import { Form, FormControl, FormField, FormInput, FormItem, FormLabel, FormMessage } from '~/ui/form'
+import { Form, FormControl, FormField, FormInput, FormInputHidable, FormItem, FormLabel, FormMessage } from '~/ui/form'
 import { Icons } from '~/ui/icons'
-import { Input } from '~/ui/input'
 import { cn } from '~/ui/utils'
 
 const formSchema = z.object({
@@ -22,7 +20,7 @@ type FormValues = z.infer<typeof formSchema>
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
 	const { toast } = useToast()
 	const form = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
@@ -58,6 +56,19 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
 	async function onSubmit(values: FormValues) {
 		signUpMutation.mutate(values)
+	}
+
+	const handleGithubRegister = async () => {
+		try {
+			// Implement GitHub login logic here
+			throw new Error('Not implemented')
+		} catch (error) {
+			toast({
+				title: 'Error',
+				description: error instanceof Error ? error.message : 'Failed to login with GitHub',
+				variant: 'destructive',
+			})
+		}
 	}
 
 	return (
@@ -112,7 +123,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 							<FormItem>
 								<FormLabel>Password</FormLabel>
 								<FormControl>
-									<FormInput
+									<FormInputHidable
 										type="password"
 										autoCapitalize="none"
 										autoComplete="new-password"
@@ -138,7 +149,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 					<span className="bg-background px-2 text-muted-foreground">Or continue with</span>
 				</div>
 			</div>
-			<Button variant="outline" type="button" disabled={signUpMutation.isPending}>
+			<Button variant="outline" type="button" disabled={signUpMutation.isPending} onClick={handleGithubRegister}>
 				{signUpMutation.isPending ? (
 					<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 				) : (

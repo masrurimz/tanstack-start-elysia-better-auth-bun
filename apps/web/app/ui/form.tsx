@@ -14,7 +14,7 @@ import {
 
 import { Label } from '~/ui/label'
 import { cn } from '~/ui/utils'
-import { Input } from './input'
+import { Input, InputHidable } from './input'
 
 const Form = FormProvider
 
@@ -152,4 +152,24 @@ const FormInput = React.forwardRef<HTMLInputElement, React.ComponentProps<typeof
 )
 FormInput.displayName = 'FormInput'
 
-export { Form, FormControl, FormDescription, FormField, FormInput, FormItem, FormLabel, FormMessage, useFormField }
+const FormInputHidable = React.forwardRef<HTMLInputElement, React.ComponentProps<typeof InputHidable>>(
+	({ className, variant, ...props }, ref) => {
+		const { error } = useFormField()
+
+		return <InputHidable ref={ref} variant={error ? 'error' : variant} {...props} />
+	},
+)
+FormInputHidable.displayName = 'FormInputHidable'
+
+export {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormInput,
+	FormInputHidable,
+	FormItem,
+	FormLabel,
+	FormMessage,
+	useFormField,
+}

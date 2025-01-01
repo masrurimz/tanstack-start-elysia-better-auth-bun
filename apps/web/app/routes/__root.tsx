@@ -1,9 +1,10 @@
 import type { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { Outlet, ScrollRestoration, createRootRoute, createRootRouteWithContext } from '@tanstack/react-router'
+import { Outlet, ScrollRestoration, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Meta, Scripts } from '@tanstack/start'
 import type { ReactNode } from 'react'
+import { Toaster } from '~/ui/toaster'
 import globalCss from '../global.css?url'
 import { DefaultCatchBoundary } from '../views/default-catch-boundary'
 import { NotFound } from '../views/not-found'
@@ -58,6 +59,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 				<TanStackRouterDevtools position="bottom-right" />
 				<ReactQueryDevtools buttonPosition="bottom-left" />
 				<Scripts />
+				<Toaster />
 			</body>
 		</html>
 	)

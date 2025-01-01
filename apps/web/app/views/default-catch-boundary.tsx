@@ -19,7 +19,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
 					onClick={() => {
 						router.invalidate()
 					}}
-					className="rounded bg-gray-600 px-2 py-1 font-extrabold text-white uppercase dark:bg-gray-700"
+					variant={'default'}
 				>
 					Try Again
 				</Button>

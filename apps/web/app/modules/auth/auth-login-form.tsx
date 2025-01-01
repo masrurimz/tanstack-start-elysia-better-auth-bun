@@ -3,12 +3,11 @@ import { useMutation } from '@tanstack/react-query'
 import type * as React from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { useToast } from '~/controllers/use-toast'
 import { authClient } from '~/infra/auth/auth-client'
-
 import { Button } from '~/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/ui/form'
+import { Form, FormControl, FormField, FormInput, FormInputHidable, FormItem, FormLabel, FormMessage } from '~/ui/form'
 import { Icons } from '~/ui/icons'
-import { Input } from '~/ui/input'
 import { cn } from '~/ui/utils'
 
 const loginSchema = z.object({
@@ -21,7 +20,7 @@ type LoginFormValues = z.infer<typeof loginSchema>
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
-	// const session = authClient.useSession()
+	const { toast } = useToast()
 
 	const form = useForm<LoginFormValues>({
 		resolver: zodResolver(loginSchema),
@@ -33,35 +32,42 @@ export function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
 
 	const loginMutation = useMutation({
 		mutationFn: async (data: LoginFormValues) => {
-			// Replace with your actual API call
-			// const response = await fetch('/api/auth/login', {
-			// 	method: 'POST',
-			// 	body: JSON.stringify(data),
-			// })
-			// if (!response.ok) throw new Error('Login failed')
-			// return response.json()
-
 			return authClient.signIn.email({
 				email: data.email,
 				password: data.password,
 				rememberMe: true,
 			})
 		},
+		onSuccess: async () => {
+			toast({
+				title: 'Success',
+				description: 'You have been successfully logged in.',
+			})
+			// You might want to redirect here
+		},
+		onError: (error) => {
+			toast({
+				title: 'Error',
+				description: error instanceof Error ? error.message : 'Failed to login',
+				variant: 'destructive',
+			})
+		},
 	})
 
 	async function onSubmit(data: LoginFormValues) {
+		await loginMutation.mutateAsync(data)
+	}
+
+	const handleGithubLogin = async () => {
 		try {
-			const res = await loginMutation.mutateAsync(data)
-
-			console.log(res)
-
-			// Getting user session test
-			const sessions = await authClient.getSession()
-			console.log('[LoginForm] sessions', sessions)
-
-			// Handle successful login (e.g., redirect)
+			// Implement GitHub login logic here
+			throw new Error('Not implemented')
 		} catch (error) {
-			// Error is handled by React Query
+			toast({
+				title: 'Error',
+				description: error instanceof Error ? error.message : 'Failed to login with GitHub',
+				variant: 'destructive',
+			})
 		}
 	}
 
@@ -76,7 +82,7 @@ export function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
 							<FormItem>
 								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input
+									<FormInput
 										{...field}
 										disabled={loginMutation.isPending}
 										placeholder="Enter email"
@@ -95,7 +101,7 @@ export function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
 							<FormItem>
 								<FormLabel>Password</FormLabel>
 								<FormControl>
-									<Input
+									<FormInputHidable
 										{...field}
 										type="password"
 										disabled={loginMutation.isPending}
@@ -123,12 +129,12 @@ export function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
 					<span className="bg-background px-2 text-muted-foreground">Or continue with</span>
 				</div>
 			</div>
-			<Button variant="outline" disabled={loginMutation.isPending}>
+			<Button variant="outline" onClick={handleGithubLogin} disabled={loginMutation.isPending}>
 				{loginMutation.isPending ? (
 					<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 				) : (
 					<Icons.gitHub className="mr-2 h-4 w-4" />
-				)}{' '}
+				)}
 				GitHub
 			</Button>
 		</div>

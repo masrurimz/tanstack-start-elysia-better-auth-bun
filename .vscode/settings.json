@@ -14,7 +14,7 @@
 	"[ignore]": {
 		"editor.defaultFormatter": "foxundermoon.shell-format"
 	},
-	"conventionalCommits.scopes": ["auth", "ui", "web"],
+	"conventionalCommits.scopes": ["auth", "ui", "web", "auth-backend"],
 	"javascript.preferences.importModuleSpecifier": "relative",
 	"editor.codeActionsOnSave": {
 		"quickfix.biome": "explicit",
