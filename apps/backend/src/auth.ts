@@ -16,6 +16,7 @@ const auth = betterAuth({
 			verify: ({ password, hash }) => Bun.password.verify(password, hash),
 		},
 	},
+	trustedOrigins: ['http://localhost:3000'],
 })
 
 const betterAuthView = (context: Context) => {
