@@ -14,6 +14,7 @@ import {
 
 import { Label } from '~/ui/label'
 import { cn } from '~/ui/utils'
+import { Input } from './input'
 
 const Form = FormProvider
 
@@ -132,7 +133,7 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<
 			<p
 				ref={ref}
 				id={formMessageId}
-				className={cn('text-[0.8rem] font-medium text-destructive', className)}
+				className={cn('font-medium text-[0.8rem] text-destructive', className)}
 				{...props}
 			>
 				{body}
@@ -142,4 +143,13 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<
 )
 FormMessage.displayName = 'FormMessage'
 
-export { useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField }
+const FormInput = React.forwardRef<HTMLInputElement, React.ComponentProps<typeof Input>>(
+	({ className, variant, ...props }, ref) => {
+		const { error } = useFormField()
+
+		return <Input ref={ref} variant={error ? 'error' : variant} {...props} />
+	},
+)
+FormInput.displayName = 'FormInput'
+
+export { Form, FormControl, FormDescription, FormField, FormInput, FormItem, FormLabel, FormMessage, useFormField }
