@@ -32,4 +32,21 @@ const betterAuthView = (context: Context) => {
 
 const authService = new Elysia().all('/api/auth/*', betterAuthView)
 
-export { authService, auth, betterAuthView }
+// user middleware (compute user and session and pass to routes)
+const userMiddleware = async (request: Request) => {
+	const session = await auth.api.getSession({ headers: request.headers })
+
+	if (!session) {
+		return {
+			user: null,
+			session: null,
+		}
+	}
+
+	return {
+		user: session.user,
+		session: session.session,
+	}
+}
+
+export { authService, auth, betterAuthView, userMiddleware }

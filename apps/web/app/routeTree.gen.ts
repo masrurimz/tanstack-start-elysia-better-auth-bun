@@ -12,11 +12,14 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as PokemonImport } from './routes/pokemon'
+import { Route as MessagesImport } from './routes/messages'
 import { Route as CountElysiaImport } from './routes/count-elysia'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as PokemonIndexImport } from './routes/pokemon.index'
+import { Route as MessagesIndexImport } from './routes/messages/index'
 import { Route as PokemonResultsImport } from './routes/pokemon.results'
+import { Route as MessagesFormImport } from './routes/messages/form'
 import { Route as AuthRegisterImport } from './routes/_auth/register'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 
@@ -25,6 +28,12 @@ import { Route as AuthLoginImport } from './routes/_auth/login'
 const PokemonRoute = PokemonImport.update({
   id: '/pokemon',
   path: '/pokemon',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MessagesRoute = MessagesImport.update({
+  id: '/messages',
+  path: '/messages',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -51,10 +60,22 @@ const PokemonIndexRoute = PokemonIndexImport.update({
   getParentRoute: () => PokemonRoute,
 } as any)
 
+const MessagesIndexRoute = MessagesIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MessagesRoute,
+} as any)
+
 const PokemonResultsRoute = PokemonResultsImport.update({
   id: '/results',
   path: '/results',
   getParentRoute: () => PokemonRoute,
+} as any)
+
+const MessagesFormRoute = MessagesFormImport.update({
+  id: '/form',
+  path: '/form',
+  getParentRoute: () => MessagesRoute,
 } as any)
 
 const AuthRegisterRoute = AuthRegisterImport.update({
@@ -94,6 +115,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CountElysiaImport
       parentRoute: typeof rootRoute
     }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesImport
+      parentRoute: typeof rootRoute
+    }
     '/pokemon': {
       id: '/pokemon'
       path: '/pokemon'
@@ -115,12 +143,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterImport
       parentRoute: typeof AuthImport
     }
+    '/messages/form': {
+      id: '/messages/form'
+      path: '/form'
+      fullPath: '/messages/form'
+      preLoaderRoute: typeof MessagesFormImport
+      parentRoute: typeof MessagesImport
+    }
     '/pokemon/results': {
       id: '/pokemon/results'
       path: '/results'
       fullPath: '/pokemon/results'
       preLoaderRoute: typeof PokemonResultsImport
       parentRoute: typeof PokemonImport
+    }
+    '/messages/': {
+      id: '/messages/'
+      path: '/'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof MessagesIndexImport
+      parentRoute: typeof MessagesImport
     }
     '/pokemon/': {
       id: '/pokemon/'
@@ -146,6 +188,20 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface MessagesRouteChildren {
+  MessagesFormRoute: typeof MessagesFormRoute
+  MessagesIndexRoute: typeof MessagesIndexRoute
+}
+
+const MessagesRouteChildren: MessagesRouteChildren = {
+  MessagesFormRoute: MessagesFormRoute,
+  MessagesIndexRoute: MessagesIndexRoute,
+}
+
+const MessagesRouteWithChildren = MessagesRoute._addFileChildren(
+  MessagesRouteChildren,
+)
+
 interface PokemonRouteChildren {
   PokemonResultsRoute: typeof PokemonResultsRoute
   PokemonIndexRoute: typeof PokemonIndexRoute
@@ -163,10 +219,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/count-elysia': typeof CountElysiaRoute
+  '/messages': typeof MessagesRouteWithChildren
   '/pokemon': typeof PokemonRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/messages/form': typeof MessagesFormRoute
   '/pokemon/results': typeof PokemonResultsRoute
+  '/messages/': typeof MessagesIndexRoute
   '/pokemon/': typeof PokemonIndexRoute
 }
 
@@ -176,7 +235,9 @@ export interface FileRoutesByTo {
   '/count-elysia': typeof CountElysiaRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/messages/form': typeof MessagesFormRoute
   '/pokemon/results': typeof PokemonResultsRoute
+  '/messages': typeof MessagesIndexRoute
   '/pokemon': typeof PokemonIndexRoute
 }
 
@@ -185,10 +246,13 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/count-elysia': typeof CountElysiaRoute
+  '/messages': typeof MessagesRouteWithChildren
   '/pokemon': typeof PokemonRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
+  '/messages/form': typeof MessagesFormRoute
   '/pokemon/results': typeof PokemonResultsRoute
+  '/messages/': typeof MessagesIndexRoute
   '/pokemon/': typeof PokemonIndexRoute
 }
 
@@ -198,10 +262,13 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/count-elysia'
+    | '/messages'
     | '/pokemon'
     | '/login'
     | '/register'
+    | '/messages/form'
     | '/pokemon/results'
+    | '/messages/'
     | '/pokemon/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -210,17 +277,22 @@ export interface FileRouteTypes {
     | '/count-elysia'
     | '/login'
     | '/register'
+    | '/messages/form'
     | '/pokemon/results'
+    | '/messages'
     | '/pokemon'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/count-elysia'
+    | '/messages'
     | '/pokemon'
     | '/_auth/login'
     | '/_auth/register'
+    | '/messages/form'
     | '/pokemon/results'
+    | '/messages/'
     | '/pokemon/'
   fileRoutesById: FileRoutesById
 }
@@ -229,6 +301,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   CountElysiaRoute: typeof CountElysiaRoute
+  MessagesRoute: typeof MessagesRouteWithChildren
   PokemonRoute: typeof PokemonRouteWithChildren
 }
 
@@ -236,6 +309,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   CountElysiaRoute: CountElysiaRoute,
+  MessagesRoute: MessagesRouteWithChildren,
   PokemonRoute: PokemonRouteWithChildren,
 }
 
@@ -252,6 +326,7 @@ export const routeTree = rootRoute
         "/",
         "/_auth",
         "/count-elysia",
+        "/messages",
         "/pokemon"
       ]
     },
@@ -268,6 +343,13 @@ export const routeTree = rootRoute
     "/count-elysia": {
       "filePath": "count-elysia.tsx"
     },
+    "/messages": {
+      "filePath": "messages.tsx",
+      "children": [
+        "/messages/form",
+        "/messages/"
+      ]
+    },
     "/pokemon": {
       "filePath": "pokemon.tsx",
       "children": [
@@ -283,9 +365,17 @@ export const routeTree = rootRoute
       "filePath": "_auth/register.tsx",
       "parent": "/_auth"
     },
+    "/messages/form": {
+      "filePath": "messages/form.tsx",
+      "parent": "/messages"
+    },
     "/pokemon/results": {
       "filePath": "pokemon.results.tsx",
       "parent": "/pokemon"
+    },
+    "/messages/": {
+      "filePath": "messages/index.tsx",
+      "parent": "/messages"
     },
     "/pokemon/": {
       "filePath": "pokemon.index.tsx",

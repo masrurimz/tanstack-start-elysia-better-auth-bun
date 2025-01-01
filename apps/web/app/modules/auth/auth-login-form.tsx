@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { useNavigate, useRouter } from '@tanstack/react-router'
 import type * as React from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -20,6 +21,7 @@ type LoginFormValues = z.infer<typeof loginSchema>
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
+	const router = useRouter()
 	const { toast } = useToast()
 
 	const form = useForm<LoginFormValues>({
@@ -43,7 +45,7 @@ export function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
 				title: 'Success',
 				description: 'You have been successfully logged in.',
 			})
-			// You might want to redirect here
+			router.invalidate()
 		},
 		onError: (error) => {
 			toast({

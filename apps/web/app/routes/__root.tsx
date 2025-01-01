@@ -4,6 +4,7 @@ import { Outlet, ScrollRestoration, createRootRouteWithContext } from '@tanstack
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Meta, Scripts } from '@tanstack/start'
 import type { ReactNode } from 'react'
+import { fetchSessionFn } from '~/infra/auth/authi-client-server'
 import { Toaster } from '~/ui/toaster'
 import globalCss from '../global.css?url'
 import { DefaultCatchBoundary } from '../views/default-catch-boundary'
@@ -34,6 +35,11 @@ export const Route = createRootRouteWithContext<{
 				<DefaultCatchBoundary {...props} />
 			</RootDocument>
 		)
+	},
+	beforeLoad: async () => {
+		const session = fetchSessionFn()
+
+		return session
 	},
 	notFoundComponent: () => <NotFound />,
 	component: RootComponent,

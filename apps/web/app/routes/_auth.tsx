@@ -1,18 +1,18 @@
-import { Outlet, createFileRoute } from '@tanstack/react-router'
-import { api } from 'backend-client'
-import { authClient } from '~/infra/auth/auth-client'
+import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth')({
 	component: Home,
-	loader: async () => {
-		const response = await api.count.index.get()
-		return response.data
+	beforeLoad: async ({ context: { user } }) => {
+		if (user) {
+			redirect({
+				to: '/messages',
+				throw: true,
+			})
+		}
 	},
 })
 
 function Home() {
-	const session = authClient.useSession()
-
 	return (
 		<>
 			<div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
