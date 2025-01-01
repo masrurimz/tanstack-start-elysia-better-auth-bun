@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { api } from 'backend-client'
-import { PokemonSprite } from '../components/pokemon/pokemon-sprite'
 import { useState } from 'react'
+import { PokemonSprite } from '../views/pokemon/pokemon-sprite'
 
 // Utility function for className merging
 function cn(...classes: (string | boolean | undefined)[]) {

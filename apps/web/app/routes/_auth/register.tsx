@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { UserAuthForm } from '~/app/components/auth/auth-register-form'
-import { buttonVariants } from '~/app/components/ui/button'
-import { cn } from '~/app/components/ui/utils'
+import { buttonVariants } from '~/ui/button'
+import { cn } from '~/ui/utils'
+import { UserAuthForm } from '~/views/auth/auth-register-form'
 
 export const Route = createFileRoute('/_auth/register')({
 	component: RouteComponent,

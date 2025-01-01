@@ -2,7 +2,7 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { api } from 'backend-client'
 import { useEffect } from 'react'
-import { Button } from '../components/ui/button'
+import { Button } from '../ui/button'
 
 export const Route = createFileRoute('/count-elysia')({
 	component: Home,

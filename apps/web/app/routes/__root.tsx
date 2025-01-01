@@ -4,10 +4,10 @@ import { Outlet, ScrollRestoration, createRootRoute, createRootRouteWithContext 
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Meta, Scripts } from '@tanstack/start'
 import type { ReactNode } from 'react'
-import { DefaultCatchBoundary } from '../components/default-catch-boundary'
-import { NotFound } from '../components/not-found'
-import { ThemeProvider } from '../components/theme-provider'
 import globalCss from '../global.css?url'
+import { DefaultCatchBoundary } from '../views/default-catch-boundary'
+import { NotFound } from '../views/not-found'
+import { ThemeProvider } from '../views/theme-provider'
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient

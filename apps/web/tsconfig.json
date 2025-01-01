@@ -15,7 +15,8 @@
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": ".",
 		"paths": {
-			"~/*": ["./*"]
+			"~/*": ["./app/*"],
+			"~/app": ["./app"]
 		},
 		"noEmit": true,
 		"strictNullChecks": true

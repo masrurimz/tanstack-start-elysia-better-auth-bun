@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { UserAuthForm } from '~/app/components/auth/auth-register-form'
-import { buttonVariants } from '~/app/components/ui/button'
-import { cn } from '~/app/components/ui/utils'
+import { buttonVariants } from '~/ui/button'
+import { cn } from '~/ui/utils'
+import { AuthLoginForm } from '~/views/auth/auth-login-form'
 
 export const Route = createFileRoute('/_auth/login')({
 	component: RouteComponent,
@@ -22,7 +22,7 @@ function RouteComponent() {
 						<h1 className="font-semibold text-2xl tracking-tight">Create an account</h1>
 						<p className="text-muted-foreground text-sm">Enter your email below to create your account</p>
 					</div>
-					<UserAuthForm />
+					<AuthLoginForm />
 					<p className="px-8 text-center text-muted-foreground text-sm">
 						By clicking continue, you agree to our{' '}
 						<Link href="/terms" className="underline underline-offset-4 hover:text-primary">

@@ -1,6 +1,6 @@
 import { Await, createFileRoute, useLoaderData } from '@tanstack/react-router'
 import { api } from 'backend-client'
-import { PokemonSprite } from '~/app/components/pokemon/pokemon-sprite'
+import { PokemonSprite } from '~/views/pokemon/pokemon-sprite'
 
 export const Route = createFileRoute('/pokemon/results')({
 	loader: async () => {
