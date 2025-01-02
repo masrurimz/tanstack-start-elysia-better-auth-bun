@@ -189,6 +189,7 @@ export const message = sqliteTable('messages', {
 	id: text('id')
 		.primaryKey()
 		.$defaultFn(() => Bun.randomUUIDv7()),
+	title: text('title').notNull(), // Add title field
 	content: text('content').notNull(),
 	userId: text('user_id')
 		.notNull()

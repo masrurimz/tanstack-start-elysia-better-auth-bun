@@ -19,7 +19,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as PokemonIndexImport } from './routes/pokemon.index'
 import { Route as MessagesIndexImport } from './routes/messages/index'
 import { Route as PokemonResultsImport } from './routes/pokemon.results'
-import { Route as MessagesFormImport } from './routes/messages/form'
+import { Route as MessagesMessageIdImport } from './routes/messages/$messageId'
 import { Route as AuthRegisterImport } from './routes/_auth/register'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 
@@ -72,9 +72,9 @@ const PokemonResultsRoute = PokemonResultsImport.update({
   getParentRoute: () => PokemonRoute,
 } as any)
 
-const MessagesFormRoute = MessagesFormImport.update({
-  id: '/form',
-  path: '/form',
+const MessagesMessageIdRoute = MessagesMessageIdImport.update({
+  id: '/$messageId',
+  path: '/$messageId',
   getParentRoute: () => MessagesRoute,
 } as any)
 
@@ -143,11 +143,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterImport
       parentRoute: typeof AuthImport
     }
-    '/messages/form': {
-      id: '/messages/form'
-      path: '/form'
-      fullPath: '/messages/form'
-      preLoaderRoute: typeof MessagesFormImport
+    '/messages/$messageId': {
+      id: '/messages/$messageId'
+      path: '/$messageId'
+      fullPath: '/messages/$messageId'
+      preLoaderRoute: typeof MessagesMessageIdImport
       parentRoute: typeof MessagesImport
     }
     '/pokemon/results': {
@@ -189,12 +189,12 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface MessagesRouteChildren {
-  MessagesFormRoute: typeof MessagesFormRoute
+  MessagesMessageIdRoute: typeof MessagesMessageIdRoute
   MessagesIndexRoute: typeof MessagesIndexRoute
 }
 
 const MessagesRouteChildren: MessagesRouteChildren = {
-  MessagesFormRoute: MessagesFormRoute,
+  MessagesMessageIdRoute: MessagesMessageIdRoute,
   MessagesIndexRoute: MessagesIndexRoute,
 }
 
@@ -223,7 +223,7 @@ export interface FileRoutesByFullPath {
   '/pokemon': typeof PokemonRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
-  '/messages/form': typeof MessagesFormRoute
+  '/messages/$messageId': typeof MessagesMessageIdRoute
   '/pokemon/results': typeof PokemonResultsRoute
   '/messages/': typeof MessagesIndexRoute
   '/pokemon/': typeof PokemonIndexRoute
@@ -235,7 +235,7 @@ export interface FileRoutesByTo {
   '/count-elysia': typeof CountElysiaRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
-  '/messages/form': typeof MessagesFormRoute
+  '/messages/$messageId': typeof MessagesMessageIdRoute
   '/pokemon/results': typeof PokemonResultsRoute
   '/messages': typeof MessagesIndexRoute
   '/pokemon': typeof PokemonIndexRoute
@@ -250,7 +250,7 @@ export interface FileRoutesById {
   '/pokemon': typeof PokemonRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
-  '/messages/form': typeof MessagesFormRoute
+  '/messages/$messageId': typeof MessagesMessageIdRoute
   '/pokemon/results': typeof PokemonResultsRoute
   '/messages/': typeof MessagesIndexRoute
   '/pokemon/': typeof PokemonIndexRoute
@@ -266,7 +266,7 @@ export interface FileRouteTypes {
     | '/pokemon'
     | '/login'
     | '/register'
-    | '/messages/form'
+    | '/messages/$messageId'
     | '/pokemon/results'
     | '/messages/'
     | '/pokemon/'
@@ -277,7 +277,7 @@ export interface FileRouteTypes {
     | '/count-elysia'
     | '/login'
     | '/register'
-    | '/messages/form'
+    | '/messages/$messageId'
     | '/pokemon/results'
     | '/messages'
     | '/pokemon'
@@ -290,7 +290,7 @@ export interface FileRouteTypes {
     | '/pokemon'
     | '/_auth/login'
     | '/_auth/register'
-    | '/messages/form'
+    | '/messages/$messageId'
     | '/pokemon/results'
     | '/messages/'
     | '/pokemon/'
@@ -346,7 +346,7 @@ export const routeTree = rootRoute
     "/messages": {
       "filePath": "messages.tsx",
       "children": [
-        "/messages/form",
+        "/messages/$messageId",
         "/messages/"
       ]
     },
@@ -365,8 +365,8 @@ export const routeTree = rootRoute
       "filePath": "_auth/register.tsx",
       "parent": "/_auth"
     },
-    "/messages/form": {
-      "filePath": "messages/form.tsx",
+    "/messages/$messageId": {
+      "filePath": "messages/$messageId.tsx",
       "parent": "/messages"
     },
     "/pokemon/results": {

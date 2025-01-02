@@ -7,6 +7,10 @@ import { getUserId } from './user'
 
 // Message models
 const messageSchema = {
+	title: t.String({
+		minLength: 1,
+		description: 'Message title',
+	}),
 	content: t.String({
 		minLength: 1,
 		description: 'Message content',
@@ -20,6 +24,7 @@ const messageModel = t.Object(messageSchema, {
 const messageResponseModel = t.Object(
 	{
 		id: t.String(),
+		title: t.String(),
 		content: t.String(),
 		userId: t.String(),
 		createdAt: t.Date(),
@@ -51,12 +56,12 @@ class Message {
 		})
 	}
 
-	async create(userId: string, content: string) {
-		return db.insert(message).values({ content, userId }).returning()
+	async create(userId: string, title: string, content: string) {
+		return db.insert(message).values({ title, content, userId }).returning()
 	}
 
-	async update(id: string, content: string) {
-		return db.update(message).set({ content, updatedAt: new Date() }).where(eq(message.id, id)).returning()
+	async update(id: string, title: string, content: string) {
+		return db.update(message).set({ title, content, updatedAt: new Date() }).where(eq(message.id, id)).returning()
 	}
 
 	async delete(id: string) {
@@ -89,7 +94,7 @@ const messageService = new Elysia({ prefix: '/messages' })
 	.decorate('message', new Message())
 
 	// Public routes
-	.get('/', ({ message }) => message.get(), {
+	.get('/index', async ({ message }) => await message.get(), {
 		response: t.Array(messageResponseModel),
 		detail: {
 			summary: 'Get all messages',
@@ -110,10 +115,10 @@ const messageService = new Elysia({ prefix: '/messages' })
 			app
 				.use(getUserId)
 				.post(
-					'/',
-					async ({ body: { content }, user, message }) => {
+					'/index',
+					async ({ body: { title, content }, user, message }) => {
 						const validUser = await message.validateAuth(user)
-						return message.create(validUser.id, content)
+						return message.create(validUser.id, title, content)
 					},
 					{
 						body: 'message',
@@ -134,10 +139,10 @@ const messageService = new Elysia({ prefix: '/messages' })
 						app
 							.patch(
 								'/:id',
-								async ({ params: { id }, body: { content }, user, message }) => {
+								async ({ params: { id }, body: { title, content }, user, message }) => {
 									const validUser = await message.validateAuth(user)
 									await message.validateOwnership(id, validUser.id)
-									return message.update(id, content)
+									return message.update(id, title, content)
 								},
 								{
 									params: t.Object({ id: t.String() }),

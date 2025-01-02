@@ -61,7 +61,7 @@ function VotePage() {
 	})
 
 	if (!pokemonPair?.[0] || !pokemonPair?.[1]) {
-		return <div className="text-2xl font-bold text-red-500">No more Pokemon to vote on!</div>
+		return <div className="font-bold text-2xl text-red-500">No more Pokemon to vote on!</div>
 	}
 
 	const [pokemonOne, pokemonTwo] = pokemonPair
@@ -75,10 +75,10 @@ function VotePage() {
 				<>
 					{/* Pokemon One */}
 					<div className="flex flex-col items-center gap-4">
-						<PokemonSprite dexId={pokemonOne.id} className="w-64 h-64" />
+						<PokemonSprite dexId={pokemonOne.id} className="h-64 w-64" />
 						<div className="text-center">
-							<span className="text-lg text-gray-500">#{pokemonOne.id}</span>
-							<h2 className="text-2xl font-bold capitalize">{pokemonOne.name}</h2>
+							<span className="text-gray-500 text-lg">#{pokemonOne.id}</span>
+							<h2 className="font-bold text-2xl capitalize">{pokemonOne.name}</h2>
 							<button
 								disabled={isVoting}
 								onClick={() =>
@@ -88,8 +88,8 @@ function VotePage() {
 									})
 								}
 								className={cn(
-									'px-8 py-3 text-lg font-semibold text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600 disabled:bg-blue-300',
-									isVoting && 'opacity-50 cursor-not-allowed',
+									'rounded-lg bg-blue-500 px-8 py-3 font-semibold text-lg text-white transition-colors hover:bg-blue-600 disabled:bg-blue-300',
+									isVoting && 'cursor-not-allowed opacity-50',
 								)}
 							>
 								Vote
@@ -112,8 +112,8 @@ function VotePage() {
 									})
 								}
 								className={cn(
-									'px-8 py-3 text-lg font-semibold text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600 disabled:bg-blue-300',
-									isVoting && 'opacity-50 cursor-not-allowed',
+									'rounded-lg bg-blue-500 px-8 py-3 font-semibold text-lg text-white transition-colors hover:bg-blue-600 disabled:bg-blue-300',
+									isVoting && 'cursor-not-allowed opacity-50',
 								)}
 							>
 								Vote
@@ -131,11 +131,11 @@ export function VoteFallback() {
 		<>
 			{[1, 2].map((i) => (
 				<div key={i} className="flex flex-col items-center gap-4">
-					<div className="w-64 h-64 rounded-lg animate-pulse bg-gray-800/10" />
-					<div className="flex flex-col items-center justify-center text-center space-y-2">
-						<div className="w-16 h-6 rounded animate-pulse bg-gray-800/10" />
-						<div className="w-32 h-8 rounded animate-pulse bg-gray-800/10" />
-						<div className="w-24 h-12 rounded animate-pulse bg-gray-800/10" />
+					<div className="h-64 w-64 animate-pulse rounded-lg bg-gray-800/10" />
+					<div className="flex flex-col items-center justify-center space-y-2 text-center">
+						<div className="h-6 w-16 animate-pulse rounded bg-gray-800/10" />
+						<div className="h-8 w-32 animate-pulse rounded bg-gray-800/10" />
+						<div className="h-12 w-24 animate-pulse rounded bg-gray-800/10" />
 					</div>
 				</div>
 			))}

@@ -34,25 +34,29 @@ export function AuthLoginForm({ className, ...props }: UserAuthFormProps) {
 
 	const loginMutation = useMutation({
 		mutationFn: async (data: LoginFormValues) => {
-			return authClient.signIn.email({
-				email: data.email,
-				password: data.password,
-				rememberMe: true,
-			})
-		},
-		onSuccess: async () => {
-			toast({
-				title: 'Success',
-				description: 'You have been successfully logged in.',
-			})
-			router.invalidate()
-		},
-		onError: (error) => {
-			toast({
-				title: 'Error',
-				description: error instanceof Error ? error.message : 'Failed to login',
-				variant: 'destructive',
-			})
+			return authClient.signIn.email(
+				{
+					email: data.email,
+					password: data.password,
+					rememberMe: true,
+				},
+				{
+					onSuccess: () => {
+						toast({
+							title: 'Success',
+							description: 'You have been successfully logged in.',
+						})
+						router.invalidate()
+					},
+					onError: (error) => {
+						toast({
+							title: 'Failed to login',
+							description: error ? error.error.message : 'An error occurred',
+							variant: 'destructive',
+						})
+					},
+				},
+			)
 		},
 	})
 

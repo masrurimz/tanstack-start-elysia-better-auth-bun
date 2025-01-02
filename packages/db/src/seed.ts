@@ -72,8 +72,8 @@ async function seed() {
 	const hash = await Bun.password.hash('racheliscool')
 	await db.insert(account).values({
 		userId: newUser.id,
-		accountId: '',
-		providerId: '',
+		accountId: newUser.id,
+		providerId: 'credential',
 		password: hash,
 	})
 

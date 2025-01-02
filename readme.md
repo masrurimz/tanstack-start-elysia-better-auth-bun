@@ -29,9 +29,7 @@ bun install
 bun dev
 ```
 
-
 ### Others scripts
-
 
 ```sh
 # type check all packages
@@ -44,4 +42,3 @@ bun format
 bun lint
 
 ```
-
