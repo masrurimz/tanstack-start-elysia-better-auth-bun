@@ -1,6 +1,6 @@
-import { Link } from '@tanstack/react-router'
-import type { ReactNode } from 'react'
-import { Button } from '../ui/button'
+import { Link } from "@tanstack/react-router";
+import type { ReactNode } from "react";
+import { Button } from "../ui/button";
 
 export function NotFound({ children }: { children?: ReactNode }) {
 	return (
@@ -15,10 +15,13 @@ export function NotFound({ children }: { children?: ReactNode }) {
 				>
 					Go back
 				</Button>
-				<Link to="/" className="rounded bg-cyan-600 px-2 py-1 font-black text-sm text-white uppercase">
+				<Link
+					to="/"
+					className="rounded bg-cyan-600 px-2 py-1 font-black text-sm text-white uppercase"
+				>
 					Start Over
 				</Link>
 			</p>
 		</div>
-	)
+	);
 }

@@ -2,6 +2,7 @@
 	"name": "backend",
 	"version": "0.0.0",
 	"main": "./src/index.ts",
+	"type": "module",
 	"scripts": {
 		"build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.ts",
 		"test": "echo \"Error: no test specified\" && exit 1",

@@ -1,12 +1,13 @@
-import { db } from '@acme/db/client'
-import { betterAuth } from 'better-auth'
-import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { openAPI } from 'better-auth/plugins'
-import Elysia, { type Context } from 'elysia'
+import { db } from "@acme/db/client";
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { openAPI } from "better-auth/plugins";
+import type { Context } from "elysia";
+import Elysia from "elysia";
 
 const auth = betterAuth({
 	database: drizzleAdapter(db, {
-		provider: 'sqlite', // or "mysql", "sqlite"
+		provider: "sqlite", // or "mysql", "sqlite"
 	}),
 	plugins: [openAPI()],
 	emailAndPassword: {
@@ -16,37 +17,37 @@ const auth = betterAuth({
 			verify: ({ password, hash }) => Bun.password.verify(password, hash),
 		},
 	},
-	trustedOrigins: ['http://localhost:3000'],
-})
+	trustedOrigins: ["http://localhost:3000"],
+});
 
 const betterAuthView = (context: Context) => {
-	const BETTER_AUTH_ACCEPT_METHODS = ['POST', 'GET']
+	const BETTER_AUTH_ACCEPT_METHODS = ["POST", "GET"];
 	// validate request method
 	if (BETTER_AUTH_ACCEPT_METHODS.includes(context.request.method)) {
-		return auth.handler(context.request)
+		return auth.handler(context.request);
 		// biome-ignore lint/style/noUselessElse: <explanation>
 	} else {
-		context.error(405)
+		context.error(405);
 	}
-}
+};
 
-const authService = new Elysia().all('/api/auth/*', betterAuthView)
+const authService = new Elysia().all("/api/auth/*", betterAuthView);
 
 // user middleware (compute user and session and pass to routes)
 const userMiddleware = async (request: Request) => {
-	const session = await auth.api.getSession({ headers: request.headers })
+	const session = await auth.api.getSession({ headers: request.headers });
 
 	if (!session) {
 		return {
 			user: null,
 			session: null,
-		}
+		};
 	}
 
 	return {
 		user: session.user,
 		session: session.session,
-	}
-}
+	};
+};
 
-export { authService, auth, betterAuthView, userMiddleware }
+export { auth, authService, betterAuthView, userMiddleware };

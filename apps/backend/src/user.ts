@@ -1,6 +1,6 @@
-import { Elysia, t } from 'elysia'
+import { Elysia, t } from "elysia";
 
-export const userService = new Elysia({ name: 'user/service' })
+export const userService = new Elysia({ name: "user/service" })
 	.state({
 		user: {} as Record<string, string>,
 		session: {} as Record<number, string>,
@@ -15,118 +15,126 @@ export const userService = new Elysia({ name: 'user/service' })
 				token: t.Number(),
 			},
 			{
-				secrets: 'seia',
+				secrets: "seia",
 			},
 		),
-		optionalSession: t.Optional(t.Ref('session')),
+		optionalSession: t.Optional(t.Ref("session")),
 	})
 	.macro({
 		isSignIn(enabled: boolean) {
-			if (!enabled) return
+			if (!enabled) return;
 
 			return {
 				beforeHandle({ error, cookie: { token }, store: { session } }) {
 					if (!token.value)
 						return error(401, {
 							success: false,
-							message: 'Unauthorized',
-						})
+							message: "Unauthorized",
+						});
 
-					const username = session[token.value as unknown as number]
+					const username = session[token.value as unknown as number];
 
 					if (!username)
 						return error(401, {
 							success: false,
-							message: 'Unauthorized',
-						})
+							message: "Unauthorized",
+						});
 				},
-			}
+			};
 		},
-	})
+	});
 
 export const getUserId = new Elysia()
 	.use(userService)
 	.guard({
 		isSignIn: true,
-		cookie: 'session',
+		cookie: "session",
 	})
 	.resolve(({ store: { session }, cookie: { token } }) => ({
 		username: session[token.value],
 	}))
-	.as('plugin')
+	.as("plugin");
 
-export const user = new Elysia({ prefix: '/user' })
+export const user = new Elysia({ prefix: "/user" })
 	.use(userService)
 	.use(getUserId)
 	.put(
-		'/sign-up',
+		"/sign-up",
 		async ({ body: { username, password }, store, error }) => {
 			if (store.user[username])
 				return error(400, {
 					success: false,
-					message: 'User already exists',
-				})
+					message: "User already exists",
+				});
 
-			store.user[username] = await Bun.password.hash(password)
+			store.user[username] = await Bun.password.hash(password);
 
 			return {
 				success: true,
-				message: 'User created',
-			}
+				message: "User created",
+			};
 		},
 		{
-			body: 'signIn',
+			body: "signIn",
 		},
 	)
 	.post(
-		'/sign-in',
-		async ({ store: { user, session }, error, body: { username, password }, cookie: { token } }) => {
-			if (!user[username] || !(await Bun.password.verify(password, user[username])))
+		"/sign-in",
+		async ({
+			store: { user, session },
+			error,
+			body: { username, password },
+			cookie: { token },
+		}) => {
+			if (
+				!user[username] ||
+				!(await Bun.password.verify(password, user[username]))
+			)
 				return error(400, {
 					success: false,
-					message: 'Invalid username or password',
-				})
+					message: "Invalid username or password",
+				});
 
-			const key = crypto.getRandomValues(new Uint32Array(1))[0]
-			session[key] = username
-			token.value = key
+			const key = crypto.getRandomValues(new Uint32Array(1))[0];
+			session[key] = username;
+			token.value = key;
 
 			return {
 				success: true,
 				message: `Signed in as ${username}`,
-			}
+			};
 		},
 		{
-			body: 'signIn',
-			cookie: 'optionalSession',
+			body: "signIn",
+			cookie: "optionalSession",
 		},
 	)
 	.get(
-		'/sign-out',
+		"/sign-out",
 		({ cookie: { token } }) => {
-			token.remove()
+			token.remove();
 
 			return {
 				success: true,
-				message: 'Signed out',
-			}
+				message: "Signed out",
+			};
 		},
 		{
-			cookie: 'optionalSession',
+			cookie: "optionalSession",
 		},
 	)
 	.get(
-		'/profile',
-		({ cookie: { token }, store: { session }, error }) => {
-			const username = session[token.value]
+		"/profile",
+		({ cookie: { token }, store: { session } }) => {
+			const username = session[token.value];
 
 			return {
 				success: true,
 				username,
-			}
+			};
 		},
 		{
-			cookie: 'session',
+			cookie: "session",
 			isSignIn: true,
 		},
-	)
+	);

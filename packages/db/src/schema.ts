@@ -1,100 +1,100 @@
-import { relations, sql } from 'drizzle-orm';
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { relations, sql } from "drizzle-orm";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const user = sqliteTable('user', {
-  id: text('id')
+export const user = sqliteTable("user", {
+  id: text("id")
     .primaryKey()
     .$defaultFn(() => Bun.randomUUIDv7()),
-  name: text('name').notNull(),
-  email: text('email').notNull().unique(),
-  emailVerified: integer('emailVerified', {
-    mode: 'boolean',
+  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
+  emailVerified: integer("emailVerified", {
+    mode: "boolean",
   }).notNull(),
-  image: text('image'),
-  createdAt: integer('createdAt', {
-    mode: 'timestamp',
+  image: text("image"),
+  createdAt: integer("createdAt", {
+    mode: "timestamp",
   })
     .notNull()
     .$defaultFn(() => new Date()),
-  updatedAt: integer('updatedAt', {
-    mode: 'timestamp',
+  updatedAt: integer("updatedAt", {
+    mode: "timestamp",
   })
     .notNull()
     .$onUpdateFn(() => new Date()),
 });
 
-export const session = sqliteTable('session', {
-  id: text('id')
+export const session = sqliteTable("session", {
+  id: text("id")
     .primaryKey()
     .$defaultFn(() => Bun.randomUUIDv7()),
-  userId: text('userId')
+  userId: text("userId")
     .notNull()
     .references(() => user.id),
-  token: text('token').notNull(),
-  expiresAt: integer('expiresAt', {
-    mode: 'timestamp',
+  token: text("token").notNull(),
+  expiresAt: integer("expiresAt", {
+    mode: "timestamp",
   }).notNull(),
-  ipAddress: text('ipAddress'),
-  userAgent: text('userAgent'),
-  createdAt: integer('createdAt', {
-    mode: 'timestamp',
+  ipAddress: text("ipAddress"),
+  userAgent: text("userAgent"),
+  createdAt: integer("createdAt", {
+    mode: "timestamp",
   })
     .notNull()
     .$defaultFn(() => new Date()),
-  updatedAt: integer('updatedAt', {
-    mode: 'timestamp',
+  updatedAt: integer("updatedAt", {
+    mode: "timestamp",
   })
     .notNull()
     .$onUpdateFn(() => new Date()),
 });
 
-export const account = sqliteTable('account', {
-  id: text('id')
+export const account = sqliteTable("account", {
+  id: text("id")
     .primaryKey()
     .$defaultFn(() => Bun.randomUUIDv7()),
-  userId: text('userId')
+  userId: text("userId")
     .notNull()
     .references(() => user.id),
-  accountId: text('accountId').notNull(),
-  providerId: text('providerId').notNull(),
-  accessToken: text('accessToken'),
-  refreshToken: text('refreshToken'),
-  accessTokenExpiresAt: integer('accessTokenExpiresAt', {
-    mode: 'timestamp',
+  accountId: text("accountId").notNull(),
+  providerId: text("providerId").notNull(),
+  accessToken: text("accessToken"),
+  refreshToken: text("refreshToken"),
+  accessTokenExpiresAt: integer("accessTokenExpiresAt", {
+    mode: "timestamp",
   }),
-  refreshTokenExpiresAt: integer('refreshTokenExpiresAt', {
-    mode: 'timestamp',
+  refreshTokenExpiresAt: integer("refreshTokenExpiresAt", {
+    mode: "timestamp",
   }),
-  scope: text('scope'),
-  password: text('password'),
-  createdAt: integer('createdAt', {
-    mode: 'timestamp',
+  scope: text("scope"),
+  password: text("password"),
+  createdAt: integer("createdAt", {
+    mode: "timestamp",
   })
     .notNull()
     .$defaultFn(() => new Date()),
-  updatedAt: integer('updatedAt', {
-    mode: 'timestamp',
+  updatedAt: integer("updatedAt", {
+    mode: "timestamp",
   })
     .notNull()
     .$onUpdateFn(() => new Date()),
 });
 
-export const verification = sqliteTable('verification', {
-  id: text('id')
+export const verification = sqliteTable("verification", {
+  id: text("id")
     .primaryKey()
     .$defaultFn(() => Bun.randomUUIDv7()),
-  identifier: text('identifier').notNull(),
-  value: text('value').notNull(),
-  expiresAt: integer('expiresAt', {
-    mode: 'timestamp',
+  identifier: text("identifier").notNull(),
+  value: text("value").notNull(),
+  expiresAt: integer("expiresAt", {
+    mode: "timestamp",
   }).notNull(),
-  createdAt: integer('createdAt', {
-    mode: 'timestamp',
+  createdAt: integer("createdAt", {
+    mode: "timestamp",
   })
     .notNull()
     .$defaultFn(() => new Date()),
-  updatedAt: integer('updatedAt', {
-    mode: 'timestamp',
+  updatedAt: integer("updatedAt", {
+    mode: "timestamp",
   })
     .notNull()
     .$onUpdateFn(() => new Date()),
@@ -108,22 +108,22 @@ export const usersRelations = relations(user, ({ many }) => ({
   messages: many(message),
 }));
 
-export const note = sqliteTable('notes', {
-  id: text('id')
+export const note = sqliteTable("notes", {
+  id: text("id")
     .primaryKey()
     .$defaultFn(() => Bun.randomUUIDv7()),
-  title: text('title').notNull(),
-  body: text('body').notNull(),
-  userId: text('user_id')
+  title: text("title").notNull(),
+  body: text("body").notNull(),
+  userId: text("user_id")
     .notNull()
     .references(() => user.id, {
-      onDelete: 'cascade',
+      onDelete: "cascade",
     }),
-  createdAt: integer('created_at', {
-    mode: 'timestamp',
+  createdAt: integer("created_at", {
+    mode: "timestamp",
   }).default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: integer('updated_at', {
-    mode: 'timestamp',
+  updatedAt: integer("updated_at", {
+    mode: "timestamp",
   })
     .default(sql`CURRENT_TIMESTAMP`)
     .$onUpdateFn(() => new Date()),
@@ -139,23 +139,23 @@ export const notesRelation = relations(note, ({ one }) => ({
   }),
 }));
 
-export const pokemon = sqliteTable('pokemon', {
-  id: integer('id').primaryKey(),
-  name: text('name').notNull(),
+export const pokemon = sqliteTable("pokemon", {
+  id: integer("id").primaryKey(),
+  name: text("name").notNull(),
 });
 
 export type Pokemon = typeof pokemon.$inferSelect;
 export type NewPokemon = typeof pokemon.$inferInsert;
 
-export const vote = sqliteTable('votes', {
-  id: text('id')
+export const vote = sqliteTable("votes", {
+  id: text("id")
     .primaryKey()
     .$defaultFn(() => Bun.randomUUIDv7()),
-  createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
-  votedForId: integer('voted_for_id')
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  votedForId: integer("voted_for_id")
     .notNull()
     .references(() => pokemon.id),
-  votedAgainstId: integer('voted_against_id')
+  votedAgainstId: integer("voted_against_id")
     .notNull()
     .references(() => pokemon.id),
 });
@@ -165,12 +165,12 @@ export type NewVote = typeof vote.$inferInsert;
 
 export const voteRelation = relations(vote, ({ one }) => ({
   votedFor: one(pokemon, {
-    relationName: 'votesFor',
+    relationName: "votesFor",
     fields: [vote.votedForId],
     references: [pokemon.id],
   }),
   votedAgainst: one(pokemon, {
-    relationName: 'votesAgainst',
+    relationName: "votesAgainst",
     fields: [vote.votedAgainstId],
     references: [pokemon.id],
   }),
@@ -178,31 +178,31 @@ export const voteRelation = relations(vote, ({ one }) => ({
 
 export const pokemonRelation = relations(pokemon, ({ many }) => ({
   votesFor: many(vote, {
-    relationName: 'votesFor',
+    relationName: "votesFor",
   }),
   votesAgainst: many(vote, {
-    relationName: 'votesAgainst',
+    relationName: "votesAgainst",
   }),
 }));
 
-export const message = sqliteTable('messages', {
-  id: text('id')
+export const message = sqliteTable("messages", {
+  id: text("id")
     .primaryKey()
     .$defaultFn(() => Bun.randomUUIDv7()),
-  title: text('title').notNull(), // Add title field
-  content: text('content').notNull(),
-  userId: text('user_id')
+  title: text("title").notNull(), // Add title field
+  content: text("content").notNull(),
+  userId: text("user_id")
     .notNull()
     .references(() => user.id, {
-      onDelete: 'cascade',
+      onDelete: "cascade",
     }),
-  createdAt: integer('created_at', {
-    mode: 'timestamp',
+  createdAt: integer("created_at", {
+    mode: "timestamp",
   })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: integer('updated_at', {
-    mode: 'timestamp',
+  updatedAt: integer("updated_at", {
+    mode: "timestamp",
   })
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`)

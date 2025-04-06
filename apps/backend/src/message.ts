@@ -1,25 +1,26 @@
-import { db } from '@acme/db/client'
-import { type NewMessage, type User, message } from '@acme/db/schema'
-import { eq } from 'drizzle-orm'
-import { Elysia, error, t } from 'elysia'
-import { userMiddleware } from './auth'
-import { getUserId } from './user'
+import { db } from "@acme/db/client";
+import type { User } from "@acme/db/schema";
+import { message } from "@acme/db/schema";
+import { eq } from "drizzle-orm";
+import { Elysia, t } from "elysia";
+import { userMiddleware } from "./auth";
+import { getUserId } from "./user";
 
 // Message models
 const messageSchema = {
 	title: t.String({
 		minLength: 1,
-		description: 'Message title',
+		description: "Message title",
 	}),
 	content: t.String({
 		minLength: 1,
-		description: 'Message content',
+		description: "Message content",
 	}),
-}
+};
 
 const messageModel = t.Object(messageSchema, {
-	description: 'Message payload',
-})
+	description: "Message payload",
+});
 
 const messageResponseModel = t.Object(
 	{
@@ -37,69 +38,73 @@ const messageResponseModel = t.Object(
 		}),
 	},
 	{
-		description: 'Message response with user details',
+		description: "Message response with user details",
 	},
-)
+);
 
 // Message service class
 class Message {
 	async get() {
 		return db.query.message.findMany({
 			with: { user: true },
-		})
+		});
 	}
 
 	async getById(id: string) {
 		return db.query.message.findFirst({
 			where: eq(message.id, id),
 			with: { user: true },
-		})
+		});
 	}
 
 	async create(userId: string, title: string, content: string) {
-		return db.insert(message).values({ title, content, userId }).returning()
+		return db.insert(message).values({ title, content, userId }).returning();
 	}
 
 	async update(id: string, title: string, content: string) {
-		return db.update(message).set({ title, content, updatedAt: new Date() }).where(eq(message.id, id)).returning()
+		return db
+			.update(message)
+			.set({ title, content, updatedAt: new Date() })
+			.where(eq(message.id, id))
+			.returning();
 	}
 
 	async delete(id: string) {
-		return db.delete(message).where(eq(message.id, id)).returning()
+		return db.delete(message).where(eq(message.id, id)).returning();
 	}
 
-	async validateAuth(user: Pick<User, 'id'> | null) {
+	async validateAuth(user: Pick<User, "id"> | null) {
 		if (!user?.id) {
-			throw error(401, 'Unauthorized')
+			throw new Error("Unauthorized");
 		}
-		return user
+		return user;
 	}
 
 	async validateOwnership(id: string, userId: string) {
-		const msg = await this.getById(id)
+		const msg = await this.getById(id);
 		if (!msg) {
-			throw error(404, 'Message not found')
+			throw new Error("Message not found");
 		}
 		if (msg.userId !== userId) {
-			throw error(403, 'Unauthorized')
+			throw new Error("Unauthorized");
 		}
-		return msg
+		return msg;
 	}
 }
 
 // Message routes
-const messageService = new Elysia({ prefix: '/messages' })
+const messageService = new Elysia({ prefix: "/messages" })
 	.model({ message: messageModel })
 	.derive(({ request }) => userMiddleware(request))
-	.decorate('message', new Message())
+	.decorate("message", new Message())
 
 	// Public routes
-	.get('/index', async ({ message }) => await message.get(), {
+	.get("/index", async ({ message }) => await message.get(), {
 		response: t.Array(messageResponseModel),
 		detail: {
-			summary: 'Get all messages',
-			tags: ['Messages'],
-			description: 'Retrieve all messages with user information',
+			summary: "Get all messages",
+			tags: ["Messages"],
+			description: "Retrieve all messages with user information",
 		},
 	})
 
@@ -107,7 +112,7 @@ const messageService = new Elysia({ prefix: '/messages' })
 	.guard(
 		{
 			detail: {
-				description: 'Requires authentication',
+				description: "Requires authentication",
 				security: [{ BearerAuth: [] }],
 			},
 		},
@@ -115,62 +120,67 @@ const messageService = new Elysia({ prefix: '/messages' })
 			app
 				.use(getUserId)
 				.post(
-					'/index',
+					"/index",
 					async ({ body: { title, content }, user, message }) => {
-						const validUser = await message.validateAuth(user)
-						return message.create(validUser.id, title, content)
+						const validUser = await message.validateAuth(user);
+						return message.create(validUser.id, title, content);
 					},
 					{
-						body: 'message',
+						body: "message",
 						response: t.Array(messageModel),
 						detail: {
-							summary: 'Create a new message',
-							tags: ['Messages'],
+							summary: "Create a new message",
+							tags: ["Messages"],
 						},
 					},
 				)
 				.guard(
 					{
 						detail: {
-							description: 'Requires message ownership',
+							description: "Requires message ownership",
 						},
 					},
 					(app) =>
 						app
 							.patch(
-								'/:id',
-								async ({ params: { id }, body: { title, content }, user, message }) => {
-									const validUser = await message.validateAuth(user)
-									await message.validateOwnership(id, validUser.id)
-									return message.update(id, title, content)
+								"/:id",
+								async ({
+									params: { id },
+									body: { title, content },
+									user,
+									message,
+								}) => {
+									const validUser = await message.validateAuth(user);
+									await message.validateOwnership(id, validUser.id);
+									return message.update(id, title, content);
 								},
 								{
 									params: t.Object({ id: t.String() }),
-									body: 'message',
+									body: "message",
 									response: t.Array(messageModel),
 									detail: {
-										summary: 'Update a message',
-										tags: ['Messages'],
+										summary: "Update a message",
+										tags: ["Messages"],
 									},
 								},
 							)
 							.delete(
-								'/:id',
+								"/:id",
 								async ({ params: { id }, user, message }) => {
-									const validUser = await message.validateAuth(user)
-									await message.validateOwnership(id, validUser.id)
-									return message.delete(id)
+									const validUser = await message.validateAuth(user);
+									await message.validateOwnership(id, validUser.id);
+									return message.delete(id);
 								},
 								{
 									params: t.Object({ id: t.String() }),
 									response: t.Array(messageModel),
 									detail: {
-										summary: 'Delete a message',
-										tags: ['Messages'],
+										summary: "Delete a message",
+										tags: ["Messages"],
 									},
 								},
 							),
 				),
-	)
+	);
 
-export { messageService }
+export { messageService };

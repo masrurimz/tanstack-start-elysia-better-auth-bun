@@ -10,299 +10,299 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as PokemonImport } from './routes/pokemon'
-import { Route as MessagesImport } from './routes/messages'
-import { Route as CountElysiaImport } from './routes/count-elysia'
-import { Route as AuthImport } from './routes/_auth'
-import { Route as IndexImport } from './routes/index'
-import { Route as PokemonIndexImport } from './routes/pokemon.index'
-import { Route as MessagesIndexImport } from './routes/messages/index'
-import { Route as PokemonResultsImport } from './routes/pokemon.results'
-import { Route as MessagesMessageIdImport } from './routes/messages/$messageId'
-import { Route as AuthRegisterImport } from './routes/_auth/register'
-import { Route as AuthLoginImport } from './routes/_auth/login'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as PokemonImport } from "./routes/pokemon";
+import { Route as MessagesImport } from "./routes/messages";
+import { Route as CountElysiaImport } from "./routes/count-elysia";
+import { Route as AuthImport } from "./routes/_auth";
+import { Route as IndexImport } from "./routes/index";
+import { Route as PokemonIndexImport } from "./routes/pokemon.index";
+import { Route as MessagesIndexImport } from "./routes/messages/index";
+import { Route as PokemonResultsImport } from "./routes/pokemon.results";
+import { Route as MessagesMessageIdImport } from "./routes/messages/$messageId";
+import { Route as AuthRegisterImport } from "./routes/_auth/register";
+import { Route as AuthLoginImport } from "./routes/_auth/login";
 
 // Create/Update Routes
 
 const PokemonRoute = PokemonImport.update({
-  id: '/pokemon',
-  path: '/pokemon',
+  id: "/pokemon",
+  path: "/pokemon",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const MessagesRoute = MessagesImport.update({
-  id: '/messages',
-  path: '/messages',
+  id: "/messages",
+  path: "/messages",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const CountElysiaRoute = CountElysiaImport.update({
-  id: '/count-elysia',
-  path: '/count-elysia',
+  id: "/count-elysia",
+  path: "/count-elysia",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const AuthRoute = AuthImport.update({
-  id: '/_auth',
+  id: "/_auth",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const PokemonIndexRoute = PokemonIndexImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => PokemonRoute,
-} as any)
+} as any);
 
 const MessagesIndexRoute = MessagesIndexImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => MessagesRoute,
-} as any)
+} as any);
 
 const PokemonResultsRoute = PokemonResultsImport.update({
-  id: '/results',
-  path: '/results',
+  id: "/results",
+  path: "/results",
   getParentRoute: () => PokemonRoute,
-} as any)
+} as any);
 
 const MessagesMessageIdRoute = MessagesMessageIdImport.update({
-  id: '/$messageId',
-  path: '/$messageId',
+  id: "/$messageId",
+  path: "/$messageId",
   getParentRoute: () => MessagesRoute,
-} as any)
+} as any);
 
 const AuthRegisterRoute = AuthRegisterImport.update({
-  id: '/register',
-  path: '/register',
+  id: "/register",
+  path: "/register",
   getParentRoute: () => AuthRoute,
-} as any)
+} as any);
 
 const AuthLoginRoute = AuthLoginImport.update({
-  id: '/login',
-  path: '/login',
+  id: "/login",
+  path: "/login",
   getParentRoute: () => AuthRoute,
-} as any)
+} as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
-    }
-    '/count-elysia': {
-      id: '/count-elysia'
-      path: '/count-elysia'
-      fullPath: '/count-elysia'
-      preLoaderRoute: typeof CountElysiaImport
-      parentRoute: typeof rootRoute
-    }
-    '/messages': {
-      id: '/messages'
-      path: '/messages'
-      fullPath: '/messages'
-      preLoaderRoute: typeof MessagesImport
-      parentRoute: typeof rootRoute
-    }
-    '/pokemon': {
-      id: '/pokemon'
-      path: '/pokemon'
-      fullPath: '/pokemon'
-      preLoaderRoute: typeof PokemonImport
-      parentRoute: typeof rootRoute
-    }
-    '/_auth/login': {
-      id: '/_auth/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof AuthLoginImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/register': {
-      id: '/_auth/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof AuthRegisterImport
-      parentRoute: typeof AuthImport
-    }
-    '/messages/$messageId': {
-      id: '/messages/$messageId'
-      path: '/$messageId'
-      fullPath: '/messages/$messageId'
-      preLoaderRoute: typeof MessagesMessageIdImport
-      parentRoute: typeof MessagesImport
-    }
-    '/pokemon/results': {
-      id: '/pokemon/results'
-      path: '/results'
-      fullPath: '/pokemon/results'
-      preLoaderRoute: typeof PokemonResultsImport
-      parentRoute: typeof PokemonImport
-    }
-    '/messages/': {
-      id: '/messages/'
-      path: '/'
-      fullPath: '/messages/'
-      preLoaderRoute: typeof MessagesIndexImport
-      parentRoute: typeof MessagesImport
-    }
-    '/pokemon/': {
-      id: '/pokemon/'
-      path: '/'
-      fullPath: '/pokemon/'
-      preLoaderRoute: typeof PokemonIndexImport
-      parentRoute: typeof PokemonImport
-    }
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_auth": {
+      id: "/_auth";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof AuthImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/count-elysia": {
+      id: "/count-elysia";
+      path: "/count-elysia";
+      fullPath: "/count-elysia";
+      preLoaderRoute: typeof CountElysiaImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/messages": {
+      id: "/messages";
+      path: "/messages";
+      fullPath: "/messages";
+      preLoaderRoute: typeof MessagesImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/pokemon": {
+      id: "/pokemon";
+      path: "/pokemon";
+      fullPath: "/pokemon";
+      preLoaderRoute: typeof PokemonImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_auth/login": {
+      id: "/_auth/login";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof AuthLoginImport;
+      parentRoute: typeof AuthImport;
+    };
+    "/_auth/register": {
+      id: "/_auth/register";
+      path: "/register";
+      fullPath: "/register";
+      preLoaderRoute: typeof AuthRegisterImport;
+      parentRoute: typeof AuthImport;
+    };
+    "/messages/$messageId": {
+      id: "/messages/$messageId";
+      path: "/$messageId";
+      fullPath: "/messages/$messageId";
+      preLoaderRoute: typeof MessagesMessageIdImport;
+      parentRoute: typeof MessagesImport;
+    };
+    "/pokemon/results": {
+      id: "/pokemon/results";
+      path: "/results";
+      fullPath: "/pokemon/results";
+      preLoaderRoute: typeof PokemonResultsImport;
+      parentRoute: typeof PokemonImport;
+    };
+    "/messages/": {
+      id: "/messages/";
+      path: "/";
+      fullPath: "/messages/";
+      preLoaderRoute: typeof MessagesIndexImport;
+      parentRoute: typeof MessagesImport;
+    };
+    "/pokemon/": {
+      id: "/pokemon/";
+      path: "/";
+      fullPath: "/pokemon/";
+      preLoaderRoute: typeof PokemonIndexImport;
+      parentRoute: typeof PokemonImport;
+    };
   }
 }
 
 // Create and export the route tree
 
 interface AuthRouteChildren {
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthRegisterRoute: typeof AuthRegisterRoute
+  AuthLoginRoute: typeof AuthLoginRoute;
+  AuthRegisterRoute: typeof AuthRegisterRoute;
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
-}
+};
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
 
 interface MessagesRouteChildren {
-  MessagesMessageIdRoute: typeof MessagesMessageIdRoute
-  MessagesIndexRoute: typeof MessagesIndexRoute
+  MessagesMessageIdRoute: typeof MessagesMessageIdRoute;
+  MessagesIndexRoute: typeof MessagesIndexRoute;
 }
 
 const MessagesRouteChildren: MessagesRouteChildren = {
   MessagesMessageIdRoute: MessagesMessageIdRoute,
   MessagesIndexRoute: MessagesIndexRoute,
-}
+};
 
 const MessagesRouteWithChildren = MessagesRoute._addFileChildren(
   MessagesRouteChildren,
-)
+);
 
 interface PokemonRouteChildren {
-  PokemonResultsRoute: typeof PokemonResultsRoute
-  PokemonIndexRoute: typeof PokemonIndexRoute
+  PokemonResultsRoute: typeof PokemonResultsRoute;
+  PokemonIndexRoute: typeof PokemonIndexRoute;
 }
 
 const PokemonRouteChildren: PokemonRouteChildren = {
   PokemonResultsRoute: PokemonResultsRoute,
   PokemonIndexRoute: PokemonIndexRoute,
-}
+};
 
 const PokemonRouteWithChildren =
-  PokemonRoute._addFileChildren(PokemonRouteChildren)
+  PokemonRoute._addFileChildren(PokemonRouteChildren);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof AuthRouteWithChildren
-  '/count-elysia': typeof CountElysiaRoute
-  '/messages': typeof MessagesRouteWithChildren
-  '/pokemon': typeof PokemonRouteWithChildren
-  '/login': typeof AuthLoginRoute
-  '/register': typeof AuthRegisterRoute
-  '/messages/$messageId': typeof MessagesMessageIdRoute
-  '/pokemon/results': typeof PokemonResultsRoute
-  '/messages/': typeof MessagesIndexRoute
-  '/pokemon/': typeof PokemonIndexRoute
+  "/": typeof IndexRoute;
+  "": typeof AuthRouteWithChildren;
+  "/count-elysia": typeof CountElysiaRoute;
+  "/messages": typeof MessagesRouteWithChildren;
+  "/pokemon": typeof PokemonRouteWithChildren;
+  "/login": typeof AuthLoginRoute;
+  "/register": typeof AuthRegisterRoute;
+  "/messages/$messageId": typeof MessagesMessageIdRoute;
+  "/pokemon/results": typeof PokemonResultsRoute;
+  "/messages/": typeof MessagesIndexRoute;
+  "/pokemon/": typeof PokemonIndexRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof AuthRouteWithChildren
-  '/count-elysia': typeof CountElysiaRoute
-  '/login': typeof AuthLoginRoute
-  '/register': typeof AuthRegisterRoute
-  '/messages/$messageId': typeof MessagesMessageIdRoute
-  '/pokemon/results': typeof PokemonResultsRoute
-  '/messages': typeof MessagesIndexRoute
-  '/pokemon': typeof PokemonIndexRoute
+  "/": typeof IndexRoute;
+  "": typeof AuthRouteWithChildren;
+  "/count-elysia": typeof CountElysiaRoute;
+  "/login": typeof AuthLoginRoute;
+  "/register": typeof AuthRegisterRoute;
+  "/messages/$messageId": typeof MessagesMessageIdRoute;
+  "/pokemon/results": typeof PokemonResultsRoute;
+  "/messages": typeof MessagesIndexRoute;
+  "/pokemon": typeof PokemonIndexRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteWithChildren
-  '/count-elysia': typeof CountElysiaRoute
-  '/messages': typeof MessagesRouteWithChildren
-  '/pokemon': typeof PokemonRouteWithChildren
-  '/_auth/login': typeof AuthLoginRoute
-  '/_auth/register': typeof AuthRegisterRoute
-  '/messages/$messageId': typeof MessagesMessageIdRoute
-  '/pokemon/results': typeof PokemonResultsRoute
-  '/messages/': typeof MessagesIndexRoute
-  '/pokemon/': typeof PokemonIndexRoute
+  __root__: typeof rootRoute;
+  "/": typeof IndexRoute;
+  "/_auth": typeof AuthRouteWithChildren;
+  "/count-elysia": typeof CountElysiaRoute;
+  "/messages": typeof MessagesRouteWithChildren;
+  "/pokemon": typeof PokemonRouteWithChildren;
+  "/_auth/login": typeof AuthLoginRoute;
+  "/_auth/register": typeof AuthRegisterRoute;
+  "/messages/$messageId": typeof MessagesMessageIdRoute;
+  "/pokemon/results": typeof PokemonResultsRoute;
+  "/messages/": typeof MessagesIndexRoute;
+  "/pokemon/": typeof PokemonIndexRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | ''
-    | '/count-elysia'
-    | '/messages'
-    | '/pokemon'
-    | '/login'
-    | '/register'
-    | '/messages/$messageId'
-    | '/pokemon/results'
-    | '/messages/'
-    | '/pokemon/'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | ""
+    | "/count-elysia"
+    | "/messages"
+    | "/pokemon"
+    | "/login"
+    | "/register"
+    | "/messages/$messageId"
+    | "/pokemon/results"
+    | "/messages/"
+    | "/pokemon/";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | ''
-    | '/count-elysia'
-    | '/login'
-    | '/register'
-    | '/messages/$messageId'
-    | '/pokemon/results'
-    | '/messages'
-    | '/pokemon'
+    | "/"
+    | ""
+    | "/count-elysia"
+    | "/login"
+    | "/register"
+    | "/messages/$messageId"
+    | "/pokemon/results"
+    | "/messages"
+    | "/pokemon";
   id:
-    | '__root__'
-    | '/'
-    | '/_auth'
-    | '/count-elysia'
-    | '/messages'
-    | '/pokemon'
-    | '/_auth/login'
-    | '/_auth/register'
-    | '/messages/$messageId'
-    | '/pokemon/results'
-    | '/messages/'
-    | '/pokemon/'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/_auth"
+    | "/count-elysia"
+    | "/messages"
+    | "/pokemon"
+    | "/_auth/login"
+    | "/_auth/register"
+    | "/messages/$messageId"
+    | "/pokemon/results"
+    | "/messages/"
+    | "/pokemon/";
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
-  CountElysiaRoute: typeof CountElysiaRoute
-  MessagesRoute: typeof MessagesRouteWithChildren
-  PokemonRoute: typeof PokemonRouteWithChildren
+  IndexRoute: typeof IndexRoute;
+  AuthRoute: typeof AuthRouteWithChildren;
+  CountElysiaRoute: typeof CountElysiaRoute;
+  MessagesRoute: typeof MessagesRouteWithChildren;
+  PokemonRoute: typeof PokemonRouteWithChildren;
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -311,11 +311,11 @@ const rootRouteChildren: RootRouteChildren = {
   CountElysiaRoute: CountElysiaRoute,
   MessagesRoute: MessagesRouteWithChildren,
   PokemonRoute: PokemonRouteWithChildren,
-}
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
