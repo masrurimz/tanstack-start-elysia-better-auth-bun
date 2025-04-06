@@ -6,10 +6,10 @@ import { note } from "./note";
 import { authService } from "./services/auth-service";
 import { user } from "./user";
 
+import { message } from "~/features/message/message-routes";
 import { pokemon } from "~/features/pokemon/pokemon-routes";
 // For backwards compatibility, keep the old routes until fully migrated
 import { countRoutes } from "./count";
-import { messageService as oldMessageService } from "./message";
 
 const app = new Elysia()
 	.use(cors())
@@ -30,6 +30,10 @@ const app = new Elysia()
 					{
 						name: "Pokemon",
 						description: "Pokemon related endpoints",
+					},
+					{
+						name: "Messages",
+						description: "Message management endpoints",
 					},
 					{
 						name: "Auth",
@@ -61,12 +65,13 @@ const app = new Elysia()
 	.get("/", ({ path }) => `Hello Elysia from ${path}`)
 	.get("health", () => "OK")
 	// Legacy routes - to be removed once migration is complete
-	.use(oldMessageService)
+	// .use(oldMessageService) // Deprecated: Use the new message routes from ~/features/message/message-routes.ts
 	.use(note)
 	.use(user)
 	.use(countRoutes)
 	// Clean architecture, feature-based routes
 	.use(pokemon)
+	.use(message)
 	.listen(3001);
 
 export type App = typeof app;
