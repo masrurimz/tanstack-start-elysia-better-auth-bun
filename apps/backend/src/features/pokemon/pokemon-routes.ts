@@ -1,9 +1,5 @@
 import { Elysia } from "elysia";
-import {
-	pokemonModel,
-	pokemonUpdateModel,
-	pokemonVoteModel,
-} from "./_domain/pokemon-model";
+import { pokemonModel, pokemonVoteModel } from "./_domain/pokemon-model";
 import { pokemonService } from "./pokemon-service";
 
 export const pokemon = new Elysia({
@@ -12,7 +8,6 @@ export const pokemon = new Elysia({
 	.decorate("pokemonService", pokemonService)
 	.model({
 		pokemon: pokemonModel,
-		pokemonUpdate: pokemonUpdateModel,
 		pokemonVote: pokemonVoteModel,
 	})
 	.onTransform(function log({ body, params, path, request: { method } }) {

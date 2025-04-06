@@ -4,9 +4,10 @@ import { desc, eq, inArray, or, sql } from "drizzle-orm";
 import type {
 	PokemonVote,
 	PokemonVoteParams,
-} from "../../../domain/entities/pokemon-entity";
+} from "~/domain/entities/pokemon-entity";
+import type { PokemonRepository } from "~/domain/repositories/pokemon-repository";
 
-export class PokemonDrizzleDbRepository {
+export class PokemonDrizzleDbRepository implements PokemonRepository {
 	findById = async ({ ids }: { ids: number[] }) => {
 		return db
 			.select({

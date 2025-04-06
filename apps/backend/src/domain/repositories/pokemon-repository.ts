@@ -1,8 +1,4 @@
-import type {
-	Pokemon,
-	PokemonPair,
-	PokemonVoteParams,
-} from "../entities/pokemon-entity";
+import type { Pokemon, PokemonVoteParams } from "../entities/pokemon-entity";
 
 export interface VoteResult {
 	id: string | number;
@@ -12,12 +8,11 @@ export interface VoteResult {
 }
 
 export interface PokemonRepository {
-	findAll: ({
+	findById: ({ ids }: { ids: number[] }) => Promise<Pokemon[]>;
+	createVote: ({
 		params,
 	}: {
-		params: { page?: number; limit?: number };
-	}) => Promise<Pokemon[]>;
-	getRandomPair: () => Promise<PokemonPair>;
-	vote: ({ params }: { params: PokemonVoteParams }) => Promise<VoteResult>;
+		params: PokemonVoteParams;
+	}) => Promise<VoteResult>;
 	getResults: () => Promise<Pokemon[]>;
 }
