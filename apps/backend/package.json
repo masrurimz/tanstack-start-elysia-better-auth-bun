@@ -6,14 +6,22 @@
 		"build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.ts",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "bun with-env --watch src/index.ts",
-		"with-env": "bun --env-file=../../.env --bun"
+		"with-env": "bun --env-file=../../.env --bun",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"format": "prettier --check .",
+		"format:fix": "prettier --write .",
+		"typecheck": "tsc --noEmit",
+		"clean": "rm -rf .turbo node_modules"
 	},
 	"dependencies": {
 		"@acme/db": "workspace:*",
+		"@acme/eslint-config": "workspace:*",
+		"@acme/prettier-config": "workspace:*",
 		"@elysiajs/cors": "^1.2.0",
 		"@elysiajs/opentelemetry": "^1.2.0",
 		"@elysiajs/swagger": "^1.2.0",
-		"better-auth": "^1.1.4",
+		"better-auth": "^1.1.8",
 		"elysia": "latest"
 	},
 	"devDependencies": {

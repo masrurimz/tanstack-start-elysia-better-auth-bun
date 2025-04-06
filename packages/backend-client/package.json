@@ -5,9 +5,16 @@
 	"types": "./src/index.ts",
 	"license": "MIT",
 	"scripts": {
-		"lint": "eslint *.ts*"
+		"lint": "eslint *.ts*",
+		"lint:fix": "eslint *.ts* --fix",
+		"format": "prettier --check .",
+		"format:fix": "prettier --write .",
+		"typecheck": "tsc --noEmit",
+		"clean": "rm -rf .turbo node_modules"
 	},
 	"dependencies": {
+		"@acme/eslint-config": "workspace:*",
+		"@acme/prettier-config": "workspace:*",
 		"@elysiajs/eden": "^1.2.0"
 	},
 	"devDependencies": {

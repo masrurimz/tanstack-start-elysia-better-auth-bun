@@ -176,3 +176,5 @@ tsconfig.tsbuildinfo
 # Finder (MacOS) folder config
 .DS_Store
 
+# turbo
+.turbo

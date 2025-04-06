@@ -22,8 +22,7 @@
 		"build": "tsc",
 		"clean": "git clean -xdf .cache .turbo dist node_modules",
 		"dev": "bun tsc --watch",
-		"format": "biome format .",
-		"format:fix": "biome format --write .",
+		"format": "prettier --check . --ignore-path ../../.gitignore",
 		"lint": "eslint",
 		"generate": "bun with-env drizzle-kit generate",
 		"push": "bun with-env drizzle-kit push",
@@ -33,6 +32,8 @@
 		"with-env": "bun --env-file=../../.env --"
 	},
 	"dependencies": {
+		"@acme/eslint-config": "workspace:*",
+		"@acme/prettier-config": "workspace:*",
 		"@libsql/client": "^0.14.0",
 		"drizzle-orm": "^0.38.3",
 		"drizzle-zod": "^0.5.1",

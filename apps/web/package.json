@@ -2,19 +2,27 @@
 	"name": "web",
 	"type": "module",
 	"scripts": {
-		"dev": "bun with-env vinxi dev",
+		"dev": "bun vinxi dev",
 		"build": "bun with-env vinxi build",
-		"start": " bun with-env vinxi start",
-		"with-env": "bun --env-file=../../.env --bun"
+		"start": "bun with-env vinxi start",
+		"with-env": "bun --env-file=../../.env --bun",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"format": "prettier --check .",
+		"format:fix": "prettier --write .",
+		"typecheck": "tsc --noEmit",
+		"clean": "rm -rf .turbo node_modules"
 	},
 	"devDependencies": {
+		"@acme/eslint-config": "workspace:*",
+		"@acme/prettier-config": "workspace:*",
 		"@acme/tailwind-config": "workspace:*",
 		"@types/bun": "latest",
 		"@types/react": "^19.0.2",
 		"@types/react-dom": "^19.0.2",
 		"@vitejs/plugin-react": "^4.3.4",
 		"autoprefixer": "^10.4.20",
-		"postcss": "^8.4.49",
+		"postcss": "^8.5.3",
 		"vite-tsconfig-paths": "^5.1.4"
 	},
 	"peerDependencies": {
