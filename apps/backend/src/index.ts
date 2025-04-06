@@ -4,10 +4,9 @@ import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import { authService } from "./services/auth-service";
 
+import { count } from "~/features/count/count-routes";
 import { message } from "~/features/message/message-routes";
 import { pokemon } from "~/features/pokemon/pokemon-routes";
-// For backwards compatibility, keep the old routes until fully migrated
-import { countRoutes } from "./count";
 
 const app = new Elysia()
 	.use(cors())
@@ -34,12 +33,12 @@ const app = new Elysia()
 						description: "Message management endpoints",
 					},
 					{
-						name: "Auth",
-						description: "Authentication related endpoints",
+						name: "Count",
+						description: "Count related endpoints",
 					},
 					{
-						name: "Legacy",
-						description: "Legacy endpoints - to be migrated",
+						name: "Auth",
+						description: "Authentication related endpoints",
 					},
 				],
 				components: {
@@ -62,7 +61,7 @@ const app = new Elysia()
 	.use(authService)
 	.get("/", ({ path }) => `Hello Elysia from ${path}`)
 	.get("health", () => "OK")
-	.use(countRoutes)
+	.use(count) // New implementation
 	.use(pokemon)
 	.use(message)
 	.listen(3001);

@@ -45,7 +45,6 @@ src/
 ├── libs/                # Shared infrastructure implementation
 ├── services/            # Shared services
 ├── use-cases/           # Application use cases
-├── auth.ts              # Authentication service
 ├── index.ts             # Application entry point
 └── *.ts                 # Legacy files (to be migrated)
 ```
