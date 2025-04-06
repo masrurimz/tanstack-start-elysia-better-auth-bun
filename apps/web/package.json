@@ -2,7 +2,7 @@
 	"name": "web",
 	"type": "module",
 	"scripts": {
-		"dev": "bun vinxi dev",
+		"dev": "bun with-env vinxi dev",
 		"build": "bun with-env vinxi build",
 		"start": "bun with-env vinxi start",
 		"with-env": "bun --env-file=../../.env --bun",
@@ -11,7 +11,7 @@
 		"format": "prettier --check .",
 		"format:fix": "prettier --write .",
 		"typecheck": "tsc --noEmit",
-		"clean": "rm -rf .turbo node_modules"
+		"clean": "rm -rf node_modules"
 	},
 	"devDependencies": {
 		"@acme/eslint-config": "workspace:*",

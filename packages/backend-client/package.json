@@ -6,11 +6,11 @@
 	"type": "module",
 	"license": "MIT",
 	"scripts": {
-		"lint": "eslint *.ts*",
-		"lint:fix": "eslint *.ts* --fix",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
 		"format": "prettier --check .",
 		"format:fix": "prettier --write .",
-		"typecheck": "tsc --noEmit",
+		"typecheck": "tsc --noEmit --emitDeclarationOnly false",
 		"clean": "rm -rf .turbo node_modules"
 	},
 	"dependencies": {

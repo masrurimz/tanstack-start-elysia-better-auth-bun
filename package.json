@@ -10,25 +10,24 @@
 	"packageManager": "bun@1.2.8",
 	"private": true,
 	"scripts": {
-		"build": "turbo run build",
-		"dev": "turbo run dev",
-		"typecheck": "turbo run typecheck",
-		"format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
-		"format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
-		"lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
-		"lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
+		"build": "bun run --filter=* build",
+		"dev": "bun run --filter=* dev",
+		"typecheck": "bun run --filter=* typecheck",
+		"format": "bun run --filter=* format",
+		"format:fix": "bun run --filter=* format:fix",
+		"lint": "bun run --filter=* lint",
+		"lint:fix": "bun run --filter=* lint:fix",
 		"lint:ws": "bunx sherif@latest",
 		"postinstall": "bun lint:ws",
-		"db:generate": "turbo run db:generate",
-		"db:push": "turbo run db:push",
-		"db:seed": "turbo run db:seed",
-		"db:studio": "turbo run db:studio",
-		"clean": "turbo run clean"
+		"db:generate": "bun run --filter=* db:generate",
+		"db:push": "bun run --filter=* db:push",
+		"db:seed": "bun run --filter=* db:seed",
+		"db:studio": "bun run --filter=* db:studio",
+		"clean": "bun run --filter=* clean"
 	},
 	"devDependencies": {
 		"@acme/eslint-config": "workspace:*",
-		"@acme/prettier-config": "workspace:*",
-		"turbo": "^2.4.4"
+		"@acme/prettier-config": "workspace:*"
 	},
 	"trustedDependencies": [
 		"@parcel/watcher",

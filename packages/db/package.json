@@ -21,7 +21,6 @@
 	"scripts": {
 		"build": "tsc",
 		"clean": "git clean -xdf .cache .turbo dist node_modules",
-		"dev": "bun tsc --watch",
 		"format": "prettier --check . --ignore-path ../../.gitignore",
 		"lint": "eslint",
 		"generate": "bun with-env drizzle-kit generate",
