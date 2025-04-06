@@ -2,9 +2,11 @@
 	"name": "backend",
 	"version": "0.0.0",
 	"main": "./src/index.ts",
+	"types": "./dist/index.d.ts",
 	"type": "module",
 	"scripts": {
 		"build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.ts",
+		"build:types": "tsc --project tsconfig.json",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "bun with-env --watch src/index.ts",
 		"with-env": "bun --env-file=../../.env --bun",
@@ -28,5 +30,5 @@
 	"devDependencies": {
 		"bun-types": "latest"
 	},
-	"module": "src/index.js"
+	"module": "src/index.ts"
 }
