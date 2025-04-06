@@ -2,6 +2,7 @@ import { db } from "@acme/db/client";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { openAPI } from "better-auth/plugins";
+import { password } from "bun";
 import type { Context } from "elysia";
 import Elysia from "elysia";
 
@@ -13,7 +14,7 @@ const auth = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 		password: {
-			hash: Bun.password.hash,
+			hash: (input: string) => password.hash(input),
 			verify: ({ password, hash }) => Bun.password.verify(password, hash),
 		},
 	},
