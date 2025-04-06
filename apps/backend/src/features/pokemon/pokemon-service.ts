@@ -2,7 +2,7 @@ import type {
 	PokemonPair,
 	PokemonVote,
 	PokemonVoteParams,
-} from "../../domain/entities/pokemon-entity";
+} from "~/domain/entities/pokemon-entity";
 import { pokemonRepository } from "./_lib/pokemon-drizzle-db-repo";
 
 function getTwoRandomNumbers(max: number) {
