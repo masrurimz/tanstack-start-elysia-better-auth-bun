@@ -27,6 +27,14 @@ GET /count
 
 Returns the current count value.
 
+**Response:**
+
+```json
+{
+	"count": 42
+}
+```
+
 ### 2. Increment Count
 
 ```
@@ -35,7 +43,7 @@ POST /count/increment
 
 Increments the count by 1 and returns the new value.
 
-Response:
+**Response:**
 
 ```json
 {
@@ -47,11 +55,63 @@ Response:
 
 ## Implementation Details
 
-- **Controller Pattern**: Uses Elysia instances as controllers with method chaining
-- **Clean Architecture**: Separates domain, application, and infrastructure concerns
-- **Type Safety**: Full TypeScript support with proper interfaces and types
-- **Validation**: Response validation using Elysia's schema validation
+### Controller Pattern
+
+Uses Elysia instances as controllers with method chaining:
+
+```typescript
+export const count = new Elysia({
+  prefix: "/count",
+})
+  .decorate("countService", countService)
+  .model({
+    countResponse: countResponseModel,
+    countIncrementResponse: countIncrementResponseModel,
+  })
+  .get("/", ...)
+  .post("/increment", ...);
+```
+
+### Service Pattern
+
+Uses class-based services with arrow function methods:
+
+```typescript
+class CountService {
+	getCount = () => {
+		return {
+			count: countRepository.getCount(),
+		};
+	};
+
+	increment = async () => {
+		const newCount = await countRepository.increment();
+		return {
+			success: true,
+			message: "Count incremented successfully",
+			count: newCount,
+		};
+	};
+}
+```
+
+### Repository Pattern
+
+Uses repository pattern with domain interfaces and file-based implementation:
+
+```typescript
+// Domain interface
+export interface CountRepository {
+	getCount: () => number;
+	increment: () => Promise<number>;
+}
+
+// Implementation in _lib
+class CountFileRepository implements CountRepository {
+	// ...implementation
+}
+```
 
 ## Persistence
 
-The count is persisted to a file (`count.txt`) to maintain state between server restarts.
+The count is persisted to a file (`count.txt`) to maintain state between server restarts. The file-based repository handles reading and writing to this file.

@@ -10,9 +10,11 @@ This is the backend service for the Pokemon voting application. It's built with 
   - [Folder Structure](#folder-structure)
     - [Feature Module Structure](#feature-module-structure)
   - [API Documentation](#api-documentation)
-    - [Pokemon API Endpoints](#pokemon-api-endpoints)
+    - [Available API Endpoints](#available-api-endpoints)
   - [Path Aliases](#path-aliases)
   - [Features](#features)
+  - [Authentication](#authentication)
+  - [Development Guidelines](#development-guidelines)
 
 ## Getting Started
 
@@ -35,38 +37,61 @@ The backend follows a clean architecture approach with a feature-based organizat
 
 ```
 src/
-├── features/            # Feature modules
+├── features/            # Feature modules (routes, services, domains)
+│   ├── auth/            # Authentication feature
+│   ├── count/           # Count feature (example)
+│   ├── message/         # Message feature
 │   └── pokemon/         # Pokemon feature
-│       ├── _domain/     # Domain models and types
-│       ├── _lib/        # Infrastructure implementation
-│       ├── pokemon-routes.ts   # API routes/controllers
-│       └── pokemon-service.ts  # Business logic
 ├── domain/              # Shared domain entities and interfaces
+│   ├── entities/        # Domain entities
+│   ├── model/           # Common models
+│   └── repositories/    # Repository interfaces
 ├── libs/                # Shared infrastructure implementation
+│   └── better-auth/     # Authentication library integration
+├── middlewares/         # Shared middlewares
 ├── services/            # Shared services
+│   └── auth-service.ts  # Authentication service
 ├── use-cases/           # Application use cases
-├── index.ts             # Application entry point
-└── *.ts                 # Legacy files (to be migrated)
+└── index.ts             # Application entry point
 ```
 
 ### Feature Module Structure
 
 Each feature follows this structure:
 
-- **\_domain/**: Contains domain models and types specific to the feature
-- **\_lib/**: Infrastructure implementations like repository adapters
-- **routes.ts**: API routes and controllers
-- **service.ts**: Business logic and application services
+```
+feature-name/
+├── _domain/                # Domain models, types, and validation schemas
+├── _lib/                   # Infrastructure implementations (repositories)
+├── feature-name-routes.ts  # API routes/controllers (Elysia instances)
+├── feature-name-service.ts # Business logic (class-based)
+└── README.md               # Feature documentation
+```
 
 ## API Documentation
 
 API documentation is available using Swagger UI at `/swagger` endpoint.
 
-### Pokemon API Endpoints
+### Available API Endpoints
 
-- `GET /pokemon/pair` - Get a random pair of Pokemon for voting
-- `POST /pokemon/vote` - Vote for a Pokemon
-- `GET /pokemon/results` - Get voting results
+- **Pokemon**
+
+  - `GET /pokemon/pair` - Get a random pair of Pokemon for voting
+  - `POST /pokemon/vote` - Vote for a Pokemon
+  - `GET /pokemon/results` - Get voting results
+
+- **Message**
+
+  - `GET /message` - Get messages
+  - `POST /message` - Create a new message
+
+- **Count**
+
+  - `GET /count` - Get the current count
+  - `POST /count/increment` - Increment the count
+
+- **Authentication**
+  - `/api/auth/*` - Authentication endpoints provided by better-auth
 
 ## Path Aliases
 
@@ -74,20 +99,51 @@ This project uses path aliases to make imports cleaner:
 
 - `~/` - Points to the src directory
 
-Example:
-
-```typescript
-// Instead of this:
-import { something } from "../../domain/entities/something";
-
-// Use this:
-import { something } from "~/domain/entities/something";
-```
-
 ## Features
 
 - **Clean Architecture**: Separation of concerns with layers
 - **Feature-based Organization**: Features are self-contained
 - **Type Safety**: Full TypeScript support
 - **API Documentation**: Swagger integration
-- **Authentication**: JWT-based authentication
+- **Authentication**: Integration with better-auth for JWT-based authentication
+
+## Authentication
+
+This project uses the `better-auth` library for authentication. It provides:
+
+- Email and password authentication
+- JWT-based session management
+- Integration with Drizzle ORM
+- OpenAPI documentation for auth endpoints
+
+## Development Guidelines
+
+1. **Controller Pattern**: Use Elysia instances as controllers with method chaining for routes.
+
+   ```typescript
+   // Example: feature-routes.ts
+   const FeatureController = new Elysia({ prefix: "/feature" })
+   	.get("/", ({ featureService }) => featureService.getAll())
+   	.post("/", ({ body, featureService }) =>
+   		featureService.create({ data: body }),
+   	);
+   ```
+
+2. **Service Pattern**: Use class-based services with arrow function methods.
+
+   ```typescript
+   // Example: feature-service.ts
+   class FeatureService {
+   	getAll = () => {
+   		return featureRepository.findAll();
+   	};
+   }
+   ```
+
+3. **Repository Pattern**: Define repository interfaces in the domain layer and implement them in feature's \_lib directory.
+
+4. **Validation**: Use Elysia's built-in validation with `t.Object()`.
+
+5. **Documentation**: Add Swagger documentation to all endpoints using the `detail` property.
+
+For complete implementation examples, see the existing feature modules in the codebase, particularly the `count` feature which demonstrates all these patterns.
