@@ -1,0 +1,16 @@
+meta {
+  name: get -delete-user-callback
+  type: http
+  seq: 21
+}
+
+get {
+  url: {{baseUrl}}/delete-user/callback
+  body: none
+  auth: none
+}
+
+params:query {
+  ~token: 
+  ~callbackURL: 
+}

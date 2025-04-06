@@ -1,0 +1,18 @@
+meta {
+  name: Send a verification email to the user
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/send-verification-email
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "",
+    "callbackURL": ""
+  }
+}

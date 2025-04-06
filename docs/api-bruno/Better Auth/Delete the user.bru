@@ -1,0 +1,19 @@
+meta {
+  name: Delete the user
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/delete-user
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "callbackURL": "",
+    "password": "",
+    "token": ""
+  }
+}

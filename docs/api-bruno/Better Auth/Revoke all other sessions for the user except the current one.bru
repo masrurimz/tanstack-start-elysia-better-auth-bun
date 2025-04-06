@@ -1,0 +1,15 @@
+meta {
+  name: Revoke all other sessions for the user except the current one
+  type: http
+  seq: 18
+}
+
+post {
+  url: {{baseUrl}}/revoke-other-sessions
+  body: json
+  auth: none
+}
+
+body:json {
+  {}
+}

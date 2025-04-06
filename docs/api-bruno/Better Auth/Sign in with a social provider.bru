@@ -1,0 +1,22 @@
+meta {
+  name: Sign in with a social provider
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/sign-in/social
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "callbackURL": "",
+    "newUserCallbackURL": "",
+    "errorCallbackURL": "",
+    "provider": "",
+    "disableRedirect": "",
+    "idToken": ""
+  }
+}

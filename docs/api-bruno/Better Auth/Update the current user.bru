@@ -1,0 +1,18 @@
+meta {
+  name: Update the current user
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/update-user
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "",
+    "image": ""
+  }
+}

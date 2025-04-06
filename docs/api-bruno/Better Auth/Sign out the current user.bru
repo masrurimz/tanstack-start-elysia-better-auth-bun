@@ -1,0 +1,15 @@
+meta {
+  name: Sign out the current user
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/sign-out
+  body: json
+  auth: none
+}
+
+body:json {
+  {}
+}

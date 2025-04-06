@@ -1,0 +1,15 @@
+meta {
+  name: Redirects the user to the callback URL with the token
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/reset-password/:token
+  body: none
+  auth: none
+}
+
+params:query {
+  ~callbackURL: 
+}

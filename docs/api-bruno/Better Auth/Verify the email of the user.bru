@@ -1,0 +1,16 @@
+meta {
+  name: Verify the email of the user
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/verify-email
+  body: none
+  auth: none
+}
+
+params:query {
+  ~token: 
+  ~callbackURL: 
+}

@@ -1,0 +1,17 @@
+meta {
+  name: Revoke a single session
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{baseUrl}}/revoke-session
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "token": ""
+  }
+}

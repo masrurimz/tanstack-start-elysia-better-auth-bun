@@ -1,0 +1,18 @@
+meta {
+  name: Link a social account to the user
+  type: http
+  seq: 19
+}
+
+post {
+  url: {{baseUrl}}/link-social
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "callbackURL": "",
+    "provider": ""
+  }
+}
