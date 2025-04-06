@@ -10,20 +10,20 @@
 	"scripts": {
 		"dev": "bun --filter backend --filter web dev",
 		"typecheck": "bunx --bun tsc",
-		"lint": "biome lint .",
-		"lint:fix": "biome lint --apply .",
-		"format": "biome format .",
-		"format:fix": "biome format --write .",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"format": "prettier --check .",
+		"format:fix": "prettier --write .",
 		"db:generate": "cd packages/db && bun run generate",
 		"db:push": "cd packages/db && bun run push",
 		"db:seed": "cd packages/db && bun run seed",
 		"db:studio": "cd packages/db && bun run studio"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4"
+		"@acme/eslint-config": "workspace:*",
+		"@acme/prettier-config": "workspace:*"
 	},
 	"trustedDependencies": [
-		"@biomejs/biome",
 		"@parcel/watcher",
 		"esbuild",
 		"protobufjs",

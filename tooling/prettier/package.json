@@ -1,31 +1,24 @@
 {
-  "name": "@acme/tailwind-config",
-  "version": "0.1.0",
+  "name": "@acme/prettier-config",
   "private": true,
+  "version": "0.1.0",
   "type": "module",
   "exports": {
-    "./native": "./native.ts",
-    "./web": "./web.ts"
+    ".": "./index.js"
   },
-  "license": "MIT",
   "scripts": {
     "clean": "git clean -xdf .cache .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.17",
-    "tailwindcss-animate": "^1.0.7"
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.11"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:*",
-    "@acme/prettier-config": "workspace:*",
     "@acme/tsconfig": "workspace:*",
     "@types/node": "^22.13.11",
-    "eslint": "^9.15.0",
-    "prettier": "^3.3.3",
     "typescript": "^5.6.3"
   },
   "prettier": "@acme/prettier-config"
