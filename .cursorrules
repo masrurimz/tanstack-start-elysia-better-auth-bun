@@ -1,0 +1,152 @@
+# Cursor Rules
+
+## Core Principles
+
+- Write clean, readable code with feature-based organization
+- Keep files small and focused (<200 lines)
+- Use clear, consistent naming and prioritize modularity
+- Always use object as function parameter
+- Always use arrow functions for class methods
+
+## Code Style
+
+### File Naming & Structure
+
+- Use kebab-case for all file and directory names (e.g., `user-profile.tsx`, `auth-service.ts`)
+- Organize directories by feature:
+  - `features/user/components/`
+  - `features/user/controllers/`
+  - `features/user/services/`
+
+### TypeScript & React
+
+- Use TypeScript for all code with proper types
+- Prefer interfaces over types for object shapes
+- Use functional and declarative programming patterns
+- Implement functional components with TypeScript interfaces for props
+
+## Clean Architecture
+
+### Layer Organization
+
+- **Presentation Layer**: Components, Pages, Controllers
+- **Application Layer**: Services, Use Cases
+- **Domain Layer**: Entities, Repository Interfaces, Types
+- **Infrastructure Layer**: Repository Implementations, API Clients, Storage
+
+### Project Structure
+
+```
+apps/
+  web/          # Frontend application
+  backend/      # Elysia backend
+packages/
+  ui/           # Shared UI components
+  config/       # Shared configurations
+  types/        # Shared TypeScript types
+  utils/        # Shared utilities
+  api/          # API client and types
+```
+
+## Controller Pattern (React)
+
+- Use controllers instead of hooks for complex business logic
+- Controllers should be class-based with arrow function methods:
+
+```typescript
+class FeatureController {
+	useFeatureQuery = () => {
+		return useQuery({
+			queryKey: ["feature"],
+			queryFn: () => this.featureService.getData(),
+		});
+	};
+}
+```
+
+## Elysia Backend Guidelines
+
+### Feature Organization
+
+- Organize code by feature modules with clear boundaries
+- Each feature contains: routes, service, domain models, and repository implementation
+- Use underscore prefix for internal directories (`_domain`, `_lib`)
+- Structure each feature as:
+
+  ```
+  feature-name/
+  ├── _domain/                # Domain models and validation schemas
+  ├── _lib/                   # Repository implementations
+  ├── feature-name-routes.ts  # API routes/controllers
+  ├── feature-name-service.ts # Business logic
+  └── README.md               # Feature documentation
+  ```
+
+### Controller Pattern (Elysia)
+
+- Use Elysia instances as controllers with method chaining
+- Group related routes using prefixes
+- Include Swagger documentation with the `detail` property
+- Example:
+
+```typescript
+const FeatureController = new Elysia({ prefix: "/feature" }).get(
+	"/",
+	({ featureService }) => {
+		return featureService.getAll();
+	},
+	{
+		detail: {
+			summary: "Get all features",
+			tags: ["Feature"],
+		},
+	},
+);
+```
+
+### Service Pattern
+
+- Use class-based services with arrow function methods
+- Keep business logic in services, separate from controllers
+- Example:
+
+```typescript
+class FeatureService {
+	getAll = () => {
+		return featureRepository.findAll();
+	};
+}
+
+export const featureService = new FeatureService();
+```
+
+### Repository Pattern
+
+- Define repository interfaces in the domain layer
+- Implement repositories in feature's `_lib` directory
+- Example:
+
+```typescript
+// Domain layer interface
+export interface FeatureRepository {
+	findAll: () => Promise<Feature[]>;
+}
+
+// Implementation in _lib
+class FeatureFileRepository implements FeatureRepository {
+	findAll = async () => {
+		// Implementation
+	};
+}
+```
+
+### Model Definition
+
+- Use Elysia's validation system (`t.Object()`) for models/DTOs
+- Group related models together in `_domain` directory
+
+## Security
+
+- Validate all inputs using Elysia's built-in validation
+- Implement proper authentication with better-auth
+- Use secure headers and proper CORS configuration
