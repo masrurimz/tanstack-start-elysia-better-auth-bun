@@ -2,9 +2,7 @@ import cors from "@elysiajs/cors";
 import { opentelemetry } from "@elysiajs/opentelemetry";
 import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
-import { note } from "./note";
 import { authService } from "./services/auth-service";
-import { user } from "./user";
 
 import { message } from "~/features/message/message-routes";
 import { pokemon } from "~/features/pokemon/pokemon-routes";
@@ -64,12 +62,7 @@ const app = new Elysia()
 	.use(authService)
 	.get("/", ({ path }) => `Hello Elysia from ${path}`)
 	.get("health", () => "OK")
-	// Legacy routes - to be removed once migration is complete
-	// .use(oldMessageService) // Deprecated: Use the new message routes from ~/features/message/message-routes.ts
-	.use(note)
-	.use(user)
 	.use(countRoutes)
-	// Clean architecture, feature-based routes
 	.use(pokemon)
 	.use(message)
 	.listen(3001);
