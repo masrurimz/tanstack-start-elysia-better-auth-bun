@@ -3,7 +3,7 @@ import type { User } from "@acme/db/schema";
 import { message } from "@acme/db/schema";
 import { eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
-import { userMiddleware } from "./auth";
+import { userMiddleware } from "./middlewares/auth-middleware";
 import { getUserId } from "./user";
 
 // Message models

@@ -2,9 +2,8 @@ import cors from "@elysiajs/cors";
 import { opentelemetry } from "@elysiajs/opentelemetry";
 import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
-import type { auth } from "./auth";
-import { authService } from "./auth";
 import { note } from "./note";
+import { authService } from "./services/auth-service";
 import { user } from "./user";
 
 import { pokemon } from "~/features/pokemon/pokemon-routes";
@@ -71,7 +70,8 @@ const app = new Elysia()
 	.listen(3001);
 
 export type App = typeof app;
-export type Session = typeof auth.$Infer.Session;
+
+export type { Session } from "~/libs/better-auth/session";
 
 console.log(
 	`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`,
