@@ -19,4 +19,5 @@ export default {
   },
   tablesFilter: ["!libsql_wasm_func_table"],
   verbose: true,
+  casing: "snake_case",
 } satisfies Config;
