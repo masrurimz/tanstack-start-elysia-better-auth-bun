@@ -14,8 +14,7 @@ class PokemonService {
 		votedForId: number;
 		votedAgainstId: number;
 	}) => {
-		const result = await api.pokemon.vote.post({ votedForId, votedAgainstId });
-		return result.data;
+		return api.pokemon.vote.post({ votedForId, votedAgainstId });
 	};
 
 	getPokemonResults = async (): Promise<PokemonResult[]> => {

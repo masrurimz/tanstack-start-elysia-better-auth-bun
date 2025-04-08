@@ -17,7 +17,7 @@ export const count = new Elysia({
 		console.log(`${method} ${path}`);
 	})
 	.get(
-		"/",
+		"/index",
 		({ countService }) => {
 			return countService.getCount();
 		},
