@@ -12,20 +12,41 @@
 
 ### File Naming & Structure
 
-- Use kebab-case for all file and directory names (e.g., `user-profile.tsx`, `auth-service.ts`)
-- Files are used for grouping related components; a single file can contain multiple components
-- Organize directories by feature:
-  - `features/user/_components/`
-  - `features/user/_controllers/`
-  - `features/user/_services/`
-- Use underscore prefix for feature-specific layer folders only (`_components`, `_controllers`, `_services`)
+- Use kebab-case for all file and directory names
+- Organize directories by feature with underscore prefix for feature-specific folders:
+  - `features/feature/_components/`, `features/feature/_controllers/`, etc.
 
 ### TypeScript & React
 
-- Use TypeScript for all code with proper types
-- Prefer interfaces over types for object shapes
-- Use functional and declarative programming patterns
+- Use TypeScript with proper types; prefer interfaces over types for object shapes
 - Implement functional components with TypeScript interfaces for props
+- Use functional and declarative programming patterns
+
+### Hook Design
+
+- Create single-responsibility hooks that return one state or action
+- Avoid hooks that return multiple states or actions to prevent unnecessary re-renders
+- Use composition to combine smaller hooks where needed
+
+### Component Design
+
+- Use compound component design pattern for complex components
+- Follow shadcn/ui patterns for component composition
+- Create small, reusable components that can be composed together
+- Isolate re-renders to the smallest possible component
+
+### Component Performance
+
+- Create smaller components that consume only the specific hooks they need
+- Break UI into logical, focused components to isolate re-renders
+
+### State Management
+
+- Use Jotai for state management when state needs to be shared across components
+- Create atoms in controllers or dedicated state files
+- Use `useAtomValue` for read-only access and `useSetAtom` for write-only access
+- Avoid using `useAtom` when you only need to read or write, not both
+- Expose atoms through controller methods for component consumption
 
 ## Clean Architecture
 
@@ -33,70 +54,59 @@
 
 - **Presentation Layer**: Components, Pages, Controllers
 - **Application Layer**: Services, Use Cases
-- **Domain Layer**: Entities, Repository Interfaces, Types
+- **Domain Layer**: Entities, Repository Interfaces, DTOs
 - **Infrastructure Layer**: Repository Implementations, API Clients, Storage
+
+### Domain Layer Organization
+
+- Organize domain files by responsibility:
+  - `*entity.ts` - Core business entities
+  - `*model.ts` - Data transfer objects (DTOs)
+  - `*repository.ts` - Repository interfaces
+  - `*schema.ts` - Validation schemas
 
 ### Project Structure
 
-```
+```txt
 apps/
-  web/                       # Frontend application
+  web/                      # Frontend application
     ├── app/
-    │   ├── features/        # Feature modules
-    │   │   └── feature-name/
-    │   │       ├── _components/    # Feature-specific components
-    │   │       ├── _controllers/   # Feature-specific controllers
-    │   │       ├── _domain/        # Feature-specific domain entity, models (dto)
-    │   │       ├── _lib/           # Feature-specific repositories
-    │   │       └── _services/      # Feature-specific services
-    │   ├── routes/          # Route definitions (minimal logic)
-    │   ├── components/      # Shared UI components
-    │   │   └── ui/          # UI component library (shadcn)
-    │   ├── controllers/     # Shared controllers
-    │   ├── domain/          # Shared domain entity, models (dto)
-    │   ├── lib/             # Infrastructure layer
-    │   │   ├── api/         # API clients
-    │   │   ├── auth/        # Auth infrastructure
-    │   │   └── storage/     # Storage implementations
-    │   └── services/        # Shared services
-  backend/                   # Elysia backend
+    │   ├── features/       # Feature modules
+    │   ├── routes/         # Route definitions
+    │   ├── components/     # Shared UI components
+    │   ├── controllers/    # Shared controllers
+    │   ├── domain/         # Shared domain entity, models
+    │   ├── lib/            # Infrastructure layer
+    │   └── services/       # Shared services
+  backend/                  # Elysia backend
     ├── src/
-    │   ├── features/        # Feature modules
-    │   │   └── feature-name/
-    │   │       ├── _domain/                # Domain models and validation schemas
-    │   │       ├── _lib/                   # Repository implementations
-    │   │       ├── feature-name-routes.ts  # API routes/controllers
-    │   │       └── feature-name-service.ts # Business logic
-    │   ├── routes/          # App-level route definitions
-    │   ├── domain/          # Shared domain models
-    │   ├── lib/             # Shared infrastructure
-    │   │   ├── database/    # Database connections and utilities
-    │   │   ├── auth/        # Authentication infrastructure
-    │   │   └── storage/     # Storage implementations
-    │   └── services/        # Shared services
-packages/
-  ui/                        # Shared UI components
-  config/                    # Shared configurations
-  domain/                    # Shared domain entity, models, validation
-  utils/                     # Shared utilities
-  api/                       # API client and types
+    │   ├── features/       # Feature modules
+    │   ├── routes/         # App-level route definitions
+    │   ├── domain/         # Shared domain models
+    │   ├── lib/            # Shared infrastructure
+    │   └── services/       # Shared services
 ```
 
 ## Controller Pattern (React)
 
-- Use controllers instead of hooks for complex business logic
-- Controllers should be class-based with arrow function methods:
+- Use class-based controllers with arrow function methods
+- Use Jotai atoms for state management
+- Provide granular hooks for accessing state and actions
 
-```typescript
-class FeatureController {
-	useFeatureQuery = () => {
-		return useQuery({
-			queryKey: ["feature"],
-			queryFn: () => this.featureService.getData(),
-		});
-	};
-}
-```
+## TanStack Route Loader Pattern
+
+- Use route loaders to fetch data during navigation
+- Delegate data fetching logic to controllers
+- Access loader data with `Route.useLoaderData()`
+
+## TanStack Route Structure
+
+- Place route files in the shared `app/routes/` directory following TanStack's file-based routing convention
+- Use dot notation for nested routes: `feature.subpage.tsx`, not nested directories
+- Name index routes as `feature.index.tsx`
+- Import feature components, controllers, and services from their feature directories
+- Keep all feature-specific code in feature directories despite routes being in the shared routes folder
+- Route files should contain minimal logic, delegating to controllers for data handling and components for UI
 
 ## Elysia Backend Guidelines
 
@@ -104,75 +114,23 @@ class FeatureController {
 
 - Organize code by feature modules with clear boundaries
 - Each feature contains: routes, service, domain models, and repository implementation
-- Use underscore prefix for all feature-specific internal directories (`_domain`, `_lib`)
-- Structure each feature as:
-
-  ```
-  feature-name/
-  ├── _domain/                # Domain models and validation schemas
-  ├── _lib/                   # Infrastructure Repository implementations
-  ├── feature-name-routes.ts  # API routes/controllers
-  ├── feature-name-service.ts # Business logic
-  └── README.md               # Feature documentation
-  ```
+- Use underscore prefix for all feature-specific internal directories
 
 ### Controller Pattern (Elysia)
 
 - Use Elysia instances as controllers with method chaining
 - Group related routes using prefixes
 - Include Swagger documentation with the `detail` property
-- Example:
-
-```typescript
-const FeatureController = new Elysia({ prefix: "/feature" }).get(
-	"/",
-	({ featureService }) => {
-		return featureService.getAll();
-	},
-	{
-		detail: {
-			summary: "Get all features",
-			tags: ["Feature"],
-		},
-	},
-);
-```
 
 ### Service Pattern
 
 - Use class-based services with arrow function methods
 - Keep business logic in services, separate from controllers
-- Example:
-
-```typescript
-class FeatureService {
-	getAll = () => {
-		return featureRepository.findAll();
-	};
-}
-
-export const featureService = new FeatureService();
-```
 
 ### Repository Pattern
 
 - Define repository interfaces in the domain layer
 - Implement repositories in feature's `_lib` directory
-- Example:
-
-```typescript
-// Domain layer interface
-export interface FeatureRepository {
-	findAll: () => Promise<Feature[]>;
-}
-
-// Implementation in _lib
-class FeatureFileRepository implements FeatureRepository {
-	findAll = async () => {
-		// Implementation
-	};
-}
-```
 
 ### Model Definition
 
