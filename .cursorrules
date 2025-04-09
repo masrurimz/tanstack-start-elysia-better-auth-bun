@@ -13,10 +13,12 @@
 ### File Naming & Structure
 
 - Use kebab-case for all file and directory names (e.g., `user-profile.tsx`, `auth-service.ts`)
+- Files are used for grouping related components; a single file can contain multiple components
 - Organize directories by feature:
-  - `features/user/components/`
-  - `features/user/controllers/`
-  - `features/user/services/`
+  - `features/user/_components/`
+  - `features/user/_controllers/`
+  - `features/user/_services/`
+- Use underscore prefix for feature-specific layer folders only (`_components`, `_controllers`, `_services`)
 
 ### TypeScript & React
 
@@ -38,14 +40,46 @@
 
 ```
 apps/
-  web/          # Frontend application
-  backend/      # Elysia backend
+  web/                       # Frontend application
+    ├── app/
+    │   ├── features/        # Feature modules
+    │   │   └── feature-name/
+    │   │       ├── _components/    # Feature-specific components
+    │   │       ├── _controllers/   # Feature-specific controllers
+    │   │       ├── _domain/        # Feature-specific domain entity, models (dto)
+    │   │       ├── _lib/           # Feature-specific repositories
+    │   │       └── _services/      # Feature-specific services
+    │   ├── routes/          # Route definitions (minimal logic)
+    │   ├── components/      # Shared UI components
+    │   │   └── ui/          # UI component library (shadcn)
+    │   ├── controllers/     # Shared controllers
+    │   ├── domain/          # Shared domain entity, models (dto)
+    │   ├── lib/             # Infrastructure layer
+    │   │   ├── api/         # API clients
+    │   │   ├── auth/        # Auth infrastructure
+    │   │   └── storage/     # Storage implementations
+    │   └── services/        # Shared services
+  backend/                   # Elysia backend
+    ├── src/
+    │   ├── features/        # Feature modules
+    │   │   └── feature-name/
+    │   │       ├── _domain/                # Domain models and validation schemas
+    │   │       ├── _lib/                   # Repository implementations
+    │   │       ├── feature-name-routes.ts  # API routes/controllers
+    │   │       └── feature-name-service.ts # Business logic
+    │   ├── routes/          # App-level route definitions
+    │   ├── domain/          # Shared domain models
+    │   ├── lib/             # Shared infrastructure
+    │   │   ├── database/    # Database connections and utilities
+    │   │   ├── auth/        # Authentication infrastructure
+    │   │   └── storage/     # Storage implementations
+    │   └── services/        # Shared services
 packages/
-  ui/           # Shared UI components
-  config/       # Shared configurations
-  types/        # Shared TypeScript types
-  utils/        # Shared utilities
-  api/          # API client and types
+  ui/                        # Shared UI components
+  config/                    # Shared configurations
+  domain/                    # Shared domain entity, models, validation
+  utils/                     # Shared utilities
+  api/                       # API client and types
 ```
 
 ## Controller Pattern (React)
@@ -70,13 +104,13 @@ class FeatureController {
 
 - Organize code by feature modules with clear boundaries
 - Each feature contains: routes, service, domain models, and repository implementation
-- Use underscore prefix for internal directories (`_domain`, `_lib`)
+- Use underscore prefix for all feature-specific internal directories (`_domain`, `_lib`)
 - Structure each feature as:
 
   ```
   feature-name/
   ├── _domain/                # Domain models and validation schemas
-  ├── _lib/                   # Repository implementations
+  ├── _lib/                   # Infrastructure Repository implementations
   ├── feature-name-routes.ts  # API routes/controllers
   ├── feature-name-service.ts # Business logic
   └── README.md               # Feature documentation
