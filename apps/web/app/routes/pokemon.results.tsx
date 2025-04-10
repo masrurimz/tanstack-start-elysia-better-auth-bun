@@ -5,9 +5,9 @@ import { pokemonController } from "~/features/pokemon/_controllers/pokemon-contr
 
 export const Route = createFileRoute("/pokemon/results")({
 	loader: () => {
-		const pokemonResults = pokemonController.getPokemonResults();
+		const resultsPromise = pokemonController.getPokemonResults();
 		return {
-			pokemonResults,
+			pokemonResults: resultsPromise.then(({ results }) => results),
 		};
 	},
 	component: ResultsPage,

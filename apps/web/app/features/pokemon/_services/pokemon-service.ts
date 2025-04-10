@@ -1,25 +1,24 @@
-import { api } from "backend-client";
-import type { PokemonPair, PokemonResult } from "../_domain/types";
+import type {
+	PokemonPair,
+	PokemonResult,
+	PokemonVoteParams,
+} from "../_domain/pokemon-model";
+import { pokemonApiRepository } from "../_lib/pokemon-api-repo";
 
 class PokemonService {
 	getPokemonPair = async (): Promise<PokemonPair> => {
-		const { data } = await api.pokemon.pair.get();
-		return data?.pair ?? [];
+		return pokemonApiRepository.getPokemonPair();
 	};
 
 	voteForPokemon = async ({
 		votedForId,
 		votedAgainstId,
-	}: {
-		votedForId: number;
-		votedAgainstId: number;
-	}) => {
-		return api.pokemon.vote.post({ votedForId, votedAgainstId });
+	}: PokemonVoteParams): Promise<void> => {
+		await pokemonApiRepository.voteForPokemon({ votedForId, votedAgainstId });
 	};
 
 	getPokemonResults = async (): Promise<PokemonResult[]> => {
-		const { data } = await api.pokemon.results.get();
-		return data ?? [];
+		return pokemonApiRepository.getPokemonResults();
 	};
 }
 

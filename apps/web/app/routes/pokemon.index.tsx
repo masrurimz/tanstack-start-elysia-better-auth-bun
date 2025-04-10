@@ -2,11 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PokemonCard } from "~/features/pokemon/_components/pokemon-card";
 import { PokemonLoader } from "~/features/pokemon/_components/pokemon-loader";
 import { pokemonController } from "~/features/pokemon/_controllers/pokemon-controller";
-import type { Pokemon } from "~/features/pokemon/_domain/types";
+import type { Pokemon } from "~/features/pokemon/_domain/pokemon-entity";
 
 export const Route = createFileRoute("/pokemon/")({
 	loader: async () => {
-		const pokemonPair = await pokemonController.getPokemonPair();
+		const { pokemonPair } = await pokemonController.getPokemonPair();
 		return { pokemonPair };
 	},
 	component: VotePage,
@@ -14,7 +14,8 @@ export const Route = createFileRoute("/pokemon/")({
 
 function VotePage() {
 	const { pokemonPair } = Route.useLoaderData();
-	const { mutate, isPending } = pokemonController.usePokemonVoteMutation();
+	const { isPending } = pokemonController.useIsPendingVote();
+	const { voteForPokemon } = pokemonController.useVoteForPokemon();
 
 	if (!pokemonPair[0] || !pokemonPair[1]) {
 		return (
@@ -36,9 +37,9 @@ function VotePage() {
 						id={pokemonOne.id}
 						name={pokemonOne.name}
 						isVoting={isPending}
-						onVote={() =>
-							mutate({
-								votedForId: pokemonOne.id,
+						onVote={({ id }) =>
+							voteForPokemon({
+								votedForId: id,
 								votedAgainstId: pokemonTwo.id,
 							})
 						}
@@ -47,9 +48,9 @@ function VotePage() {
 						id={pokemonTwo.id}
 						name={pokemonTwo.name}
 						isVoting={isPending}
-						onVote={() =>
-							mutate({
-								votedForId: pokemonTwo.id,
+						onVote={({ id }) =>
+							voteForPokemon({
+								votedForId: id,
 								votedAgainstId: pokemonOne.id,
 							})
 						}

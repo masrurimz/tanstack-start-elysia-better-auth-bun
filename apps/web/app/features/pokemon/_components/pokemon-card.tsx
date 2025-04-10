@@ -4,7 +4,7 @@ import { PokemonSprite } from "./pokemon-sprite";
 interface PokemonCardProps {
 	id: number;
 	name: string;
-	onVote?: () => void;
+	onVote?: ({ id }: { id: number }) => void;
 	isVoting?: boolean;
 }
 
@@ -24,7 +24,7 @@ export const PokemonCard = ({
 					<button
 						type="button"
 						disabled={isVoting}
-						onClick={onVote}
+						onClick={() => onVote({ id })}
 						className={cn(
 							"rounded-lg bg-blue-500 px-8 py-3 font-semibold text-lg text-white transition-colors hover:bg-blue-600 disabled:bg-blue-300",
 							isVoting && "cursor-not-allowed opacity-50",

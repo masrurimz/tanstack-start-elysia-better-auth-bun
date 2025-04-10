@@ -1,4 +1,4 @@
-import type { PokemonResult } from "../_domain/types";
+import type { PokemonResult } from "../_domain/pokemon-model";
 import { PokemonSprite } from "./pokemon-sprite";
 
 interface PokemonResultsListProps {

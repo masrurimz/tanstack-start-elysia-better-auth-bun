@@ -1,7 +1,11 @@
-export const PokemonLoader = () => {
+interface PokemonLoaderProps {
+	count?: number;
+}
+
+export const PokemonLoader = ({ count = 2 }: PokemonLoaderProps) => {
 	return (
 		<>
-			{[1, 2].map((i) => (
+			{Array.from({ length: count }).map((_, i) => (
 				<div key={i} className="flex flex-col items-center gap-4">
 					<div className="h-64 w-64 animate-pulse rounded-lg bg-gray-800/10" />
 					<div className="flex flex-col items-center justify-center space-y-2 text-center">
@@ -15,10 +19,14 @@ export const PokemonLoader = () => {
 	);
 };
 
-export const ResultsLoader = () => {
+interface ResultsLoaderProps {
+	count?: number;
+}
+
+export const ResultsLoader = ({ count = 10 }: ResultsLoaderProps) => {
 	return (
 		<>
-			{Array.from({ length: 10 }).map((_, i) => (
+			{Array.from({ length: count }).map((_, i) => (
 				<div
 					key={i}
 					className="flex items-center p-6 rounded-lg shadow gap-6 animate-pulse bg-gray-800/40"

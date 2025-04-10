@@ -1,39 +1,54 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRouter } from "@tanstack/react-router";
+import { atom, useAtomValue, useSetAtom } from "jotai";
+import type {
+	PokemonPair,
+	PokemonResult,
+	PokemonVoteParams,
+} from "../_domain/pokemon-model";
 import { pokemonService } from "../_services/pokemon-service";
 
+// Atoms
+const isPendingVoteAtom = atom(false);
+
 class PokemonController {
-	getPokemonPair = async () => {
-		return pokemonService.getPokemonPair();
+	// Data fetchers
+	getPokemonPair = async (): Promise<{ pokemonPair: PokemonPair }> => {
+		const pokemonPair = await pokemonService.getPokemonPair();
+		return { pokemonPair };
 	};
 
-	usePokemonVoteMutation = () => {
-		const [isPending, setIsPending] = useState(false);
-		const navigate = useNavigate();
+	getPokemonResults = async (): Promise<{ results: PokemonResult[] }> => {
+		const results = await pokemonService.getPokemonResults();
+		return { results };
+	};
 
-		const mutate = async (vote: {
-			votedForId: number;
-			votedAgainstId: number;
-		}) => {
+	// Hooks for reading state
+	useIsPendingVote = () => {
+		const isPending = useAtomValue(isPendingVoteAtom);
+		return { isPending };
+	};
+
+	// Hooks for writing state
+	useVoteForPokemon = () => {
+		const router = useRouter();
+		const setIsPending = useSetAtom(isPendingVoteAtom);
+
+		const voteForPokemon = async ({
+			votedForId,
+			votedAgainstId,
+		}: PokemonVoteParams): Promise<{ success: boolean }> => {
 			try {
 				setIsPending(true);
-				await pokemonService.voteForPokemon(vote);
-				void navigate({ to: "/pokemon" });
-				return true;
+				await pokemonService.voteForPokemon({ votedForId, votedAgainstId });
+				await router.invalidate();
+				return { success: true };
 			} finally {
 				setIsPending(false);
 			}
 		};
 
-		return {
-			mutate,
-			isPending,
-		};
-	};
-
-	getPokemonResults = async () => {
-		return pokemonService.getPokemonResults();
+		return { voteForPokemon };
 	};
 }
 
