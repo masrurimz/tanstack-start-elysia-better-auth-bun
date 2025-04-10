@@ -7,6 +7,7 @@
 - Use clear, consistent naming and prioritize modularity
 - Always use object as function parameter
 - Always use arrow functions for class methods
+- Always return objects from hooks and async functions
 
 ## Code Style
 
@@ -25,6 +26,7 @@
 ### Hook Design
 
 - Create single-responsibility hooks that return one state or action
+- All hooks MUST return objects even when returning a single value (e.g., `return { isPending }` not `return isPending`)
 - Avoid hooks that return multiple states or actions to prevent unnecessary re-renders
 - Use composition to combine smaller hooks where needed
 
@@ -34,6 +36,7 @@
 - Follow shadcn/ui patterns for component composition
 - Create small, reusable components that can be composed together
 - Isolate re-renders to the smallest possible component
+- All component event handlers should use object parameters (e.g., `onClick={({ id }) => handleClick({ id })}`)
 
 ### Component Performance
 
@@ -47,6 +50,12 @@
 - Use `useAtomValue` for read-only access and `useSetAtom` for write-only access
 - Avoid using `useAtom` when you only need to read or write, not both
 - Expose atoms through controller methods for component consumption
+
+### Function Returns
+
+- All functions MUST return objects if needed, even for single values (e.g., `return { result }` not `return result`)
+- All hooks MUST return objects, even for single values (e.g., `return { isPending }` not `return isPending`)
+- All controller methods that return data should return objects for destructuring
 
 ## Clean Architecture
 
@@ -92,12 +101,15 @@ apps/
 - Use class-based controllers with arrow function methods
 - Use Jotai atoms for state management
 - Provide granular hooks for accessing state and actions
+- All hooks MUST return objects, even for single values (e.g., `return { isPending }` not `return isPending`)
+- All controller data fetchers MUST return objects (e.g., `return { pokemonPair }` not `return pokemonPair`)
 
 ## TanStack Route Loader Pattern
 
 - Use route loaders to fetch data during navigation
 - Delegate data fetching logic to controllers
 - Access loader data with `Route.useLoaderData()`
+- Always destructure values from loaders (e.g., `const { pokemonPair } = Route.useLoaderData()`)
 
 ## TanStack Route Structure
 
@@ -126,11 +138,17 @@ apps/
 
 - Use class-based services with arrow function methods
 - Keep business logic in services, separate from controllers
+- All service methods MUST accept object parameters and return objects
 
 ### Repository Pattern
 
-- Define repository interfaces in the domain layer
-- Implement repositories in feature's `_lib` directory
+- Define repository interfaces in the domain layer as `entity-repository.ts`
+- Implement repositories in feature's `_lib` directory using the pattern: `entity-infrastructure-type-repo.ts`
+  - Example: `user-drizzle-db-repo.ts`, `product-api-repo.ts`, `auth-tanstack-query-repo.ts`
+- Always include both the infrastructure technology and type in the repository implementation filename
+- Use direct imports instead of barrel files for better tree-shaking and build performance
+- Repository implementations should use arrow function methods consistent with class method guidelines
+- All repository methods MUST accept object parameters and return objects
 
 ### Model Definition
 
