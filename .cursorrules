@@ -16,6 +16,15 @@
 - Use kebab-case for all file and directory names
 - Organize directories by feature with underscore prefix for feature-specific folders:
   - `features/feature/_components/`, `features/feature/_controllers/`, etc.
+- Shared components should NOT use underscore prefix:
+  - `components/ui/`, `components/layout/`, `components/shared/`
+
+### Imports & Paths
+
+- Use absolute imports with the `~` prefix for all project files
+- Import UI components from `~/components/ui/*` NOT from `~/ui/*`
+- Always use direct imports instead of barrel (index) files for better tree-shaking
+- Prefer consistent import ordering: React/external libraries first, followed by absolute imports
 
 ### TypeScript & React
 
@@ -66,6 +75,14 @@
 - **Domain Layer**: Entities, Repository Interfaces, DTOs
 - **Infrastructure Layer**: Repository Implementations, API Clients, Storage
 
+### Component Organization
+
+- Place all shared UI components in `app/components/ui/`
+- Place all layout components in `app/components/layout/`
+- Place all shared utility components in `app/components/shared/`
+- Place feature-specific components in `app/features/feature/_components/`
+- Use consistent import paths starting with `~` (e.g. `import { Button } from "~/components/ui/button";`)
+
 ### Domain Layer Organization
 
 - Organize domain files by responsibility:
@@ -81,8 +98,15 @@ apps/
   web/                      # Frontend application
     ├── app/
     │   ├── features/       # Feature modules
+    │   │   └── feature/    # Specific feature
+    │   │       ├── _components/  # Feature-specific components
+    │   │       ├── _controllers/ # Feature-specific controllers
+    │   │       └── _domain/      # Feature-specific domain models
     │   ├── routes/         # Route definitions
     │   ├── components/     # Shared UI components
+    │   │   ├── ui/         # UI primitives
+    │   │   ├── layout/     # Layout components
+    │   │   └── shared/     # Shared utility components
     │   ├── controllers/    # Shared controllers
     │   ├── domain/         # Shared domain entity, models
     │   ├── lib/            # Infrastructure layer
@@ -116,7 +140,7 @@ apps/
 - Place route files in the shared `app/routes/` directory following TanStack's file-based routing convention
 - Use dot notation for nested routes: `feature.subpage.tsx`, not nested directories
 - Name index routes as `feature.index.tsx`
-- Import feature components, controllers, and services from their feature directories
+- Import feature components, controllers, and services from their feature directories with absolute paths
 - Keep all feature-specific code in feature directories despite routes being in the shared routes folder
 - Route files should contain minimal logic, delegating to controllers for data handling and components for UI
 
