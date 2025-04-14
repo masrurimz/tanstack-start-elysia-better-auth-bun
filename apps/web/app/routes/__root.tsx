@@ -9,16 +9,16 @@ import {
 } from "@tanstack/react-router";
 import { Meta, Scripts } from "@tanstack/start";
 import type { ReactNode } from "react";
+import { ThemeProvider } from "~/components/layout/theme-provider";
+import { DefaultCatchBoundary } from "~/components/shared/default-catch-boundary";
+import { NotFound } from "~/components/shared/not-found";
+import { buttonVariants } from "~/components/ui/button";
+import { Toaster } from "~/components/ui/toaster";
+import { cn } from "~/components/ui/utils";
 import { getSessionFn } from "~/libs/better-auth/auth-session";
-import { buttonVariants } from "~/ui/button";
-import { Toaster } from "~/ui/toaster";
-import { cn } from "~/ui/utils";
 import { useToast } from "../controllers/use-toast";
 import { authController } from "../features/auth/_controllers/auth-controller";
 import globalCss from "../global.css?url";
-import { DefaultCatchBoundary } from "../views/default-catch-boundary";
-import { NotFound } from "../views/not-found";
-import { ThemeProvider } from "../views/theme-provider";
 interface RouterContext {
 	queryClient: QueryClient;
 	// getSession: () => ReturnType<typeof getSessionFn>;
@@ -160,7 +160,7 @@ function RootComponent() {
 
 							{isAuthenticated && (
 								<div className="flex items-center space-x-4">
-									<span>Welcome, {user?.name || user?.email}</span>
+									<span>Welcome, {user?.name ?? user?.email}</span>
 									<button
 										onClick={handleLogout}
 										className={cn(

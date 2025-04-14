@@ -1,8 +1,8 @@
 import { Link, createFileRoute, redirect } from "@tanstack/react-router";
+import { buttonVariants } from "~/components/ui/button";
+import { cn } from "~/components/ui/utils";
 import { AuthLoginForm } from "~/features/auth/_components/auth-login-form";
 import { authController } from "~/features/auth/_controllers/auth-controller";
-import { buttonVariants } from "~/ui/button";
-import { cn } from "~/ui/utils";
 
 // Create a custom error class for redirects
 class RedirectError extends Error {

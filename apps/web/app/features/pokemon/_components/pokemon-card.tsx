@@ -1,4 +1,4 @@
-import { cn } from "~/ui/utils";
+import { cn } from "~/components/ui/utils";
 import { PokemonSprite } from "./pokemon-sprite";
 
 interface PokemonCardProps {

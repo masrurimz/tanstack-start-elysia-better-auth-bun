@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import React from "react";
-import { Button } from "~/ui/button";
+import { Button } from "~/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -8,7 +8,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "~/ui/card";
+} from "~/components/ui/card";
 
 // Root component
 export const CountCard = ({
