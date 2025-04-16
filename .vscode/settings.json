@@ -1,35 +1,27 @@
 {
-	"files.readonlyInclude": {
-		"**/routeTree.gen.ts": true,
-		"pnpm-lock.yaml": true,
-		"bun.lock": true
-	},
-	"files.watcherExclude": {
-		"**/routeTree.gen.ts": true,
-		"pnpm-lock.yaml": true,
-		"bun.lock": true
-	},
-	"search.exclude": {
-		"**/routeTree.gen.ts": true,
-		"pnpm-lock.yaml": true,
-		"bun.lock": true
-	},
-
-	"explorer.fileNesting.enabled": true,
-	"explorer.fileNesting.patterns": {
-		"tsconfig.json": "tsconfig.*.json, env.d.ts",
-		"app.config.*": "jsconfig*, vitest.config.*, cypress.config.*, playwright.config.*",
-		"package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .prettier*, prettier*, .editorconfig, .gitattributes, bun.lock"
-	},
-
-	// always choose typescript from node_modules
-	"typescript.tsdk": "./node_modules/typescript/lib",
-
-	// use LF line endings
-	"files.eol": "\n",
-
-	// set prettier as default formatter for json, ts, tsx, js, jsx, html, css
-	"[json][jsonc][typescript][typescriptreact][javascript][javascriptreact][html][css]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	}
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[dotenv]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
+  "[ignore]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
+  "conventionalCommits.scopes": ["auth", "ui", "web", "auth-backend", "backed"],
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "go.goroot": "/Users/masrurimz/.local/share/mise/installs/go/1.23.4",
+  "debug.javascript.defaultRuntimeExecutable": {
+    "pwa-node": "/Users/masrurimz/.local/share/mise/shims/node"
+  },
+  "go.alternateTools": {
+    "go": "/Users/masrurimz/.local/share/mise/shims/go",
+    "gopls": "/Users/masrurimz/.local/share/mise/shims/gopls"
+  },
+  "[properties]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  }
 }

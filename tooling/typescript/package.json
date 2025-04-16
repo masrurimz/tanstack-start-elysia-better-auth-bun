@@ -2,9 +2,6 @@
 	"name": "@acme/tsconfig",
 	"private": true,
 	"version": "0.1.0",
-	"dependencies": {
-		"typescript": "^5.8.3"
-	},
 	"files": [
 		"*.json"
 	]

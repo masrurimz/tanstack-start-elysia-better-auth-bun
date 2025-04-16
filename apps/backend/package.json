@@ -24,7 +24,7 @@
 		"@elysiajs/cors": "^1.2.0",
 		"@elysiajs/opentelemetry": "^1.2.0",
 		"@elysiajs/swagger": "^1.2.0",
-		"better-auth": "^1.2.7",
+		"better-auth": "^1.1.8",
 		"elysia": "latest"
 	},
 	"devDependencies": {
