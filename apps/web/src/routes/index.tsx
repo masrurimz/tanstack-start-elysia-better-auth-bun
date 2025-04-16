@@ -6,7 +6,7 @@ import { authClientRepo } from "~/libs/better-auth/auth-client-repo";
 export const Route = createFileRoute("/")({
   component: Home,
   loader: ({ context }) => {
-    return { user: context.session.data?.user };
+    return { user: context.session?.user };
   },
 });
 

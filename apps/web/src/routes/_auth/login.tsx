@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_auth/login")({
   beforeLoad: async () => {
     try {
       const session = await authController.getSession();
-      if (session.data?.user) {
+      if (session?.user) {
         return redirect({ to: "/" });
       }
     } catch (error) {

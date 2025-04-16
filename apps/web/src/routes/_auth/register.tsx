@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_auth/register")({
   component: RouteComponent,
   beforeLoad: async ({ context }) => {
     try {
-      const session = context.session.data;
+      const session = context.session;
       if (session?.user) {
         redirect({
           to: "/",
