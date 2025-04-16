@@ -6,7 +6,7 @@ const VoteLayout = ({ children }: { children: React.ReactNode }) => (
     <header className="px-8 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-baseline">
-          <Link href="/pokemon" className="text-3xl font-bold">
+          <Link to="/pokemon" className="text-3xl font-bold">
             round<span className="text-purple-600">est</span>
             <span className="pl-2 text-2xl text-gray-400 font-extralight">
               (Remix + Drizzle + Bun Stack Version)
@@ -14,7 +14,7 @@ const VoteLayout = ({ children }: { children: React.ReactNode }) => (
           </Link>
         </div>
         <nav className="flex flex-row items-center gap-8">
-          <Link href="/pokemon/results" className="text-lg hover:underline">
+          <Link to="/pokemon/results" className="text-lg hover:underline">
             Results
           </Link>
         </nav>
