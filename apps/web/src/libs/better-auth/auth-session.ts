@@ -1,25 +1,19 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getHeaders } from "vinxi/http";
+import { getWebRequest } from "vinxi/http";
 import { authClientRepo } from "./auth-client-repo";
 
 type Session = typeof authClientRepo.$Infer.Session;
 
 const getSessionFn = createServerFn().handler(async () => {
-	const vinxiHeaders = getHeaders();
+  const { headers } = getWebRequest()!;
 
-	const headers = new Headers();
+  const session = await authClientRepo.getSession({
+    fetchOptions: {
+      headers,
+    },
+  });
 
-	if (vinxiHeaders.cookie) {
-		headers.set("cookie", vinxiHeaders.cookie);
-	}
-
-	const session = await authClientRepo.getSession({
-		fetchOptions: {
-			headers,
-		},
-	});
-
-	return session;
+  return session || null;
 });
 
 export { getSessionFn };
