@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import ThemeToggle from "~/components/ThemeToggle";
 import { Button } from "~/components/ui/button";
-// import authClient from "~/lib/auth-client";
+import { authClientRepo } from "~/libs/better-auth/auth-client-repo";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -38,7 +38,7 @@ function Home() {
 
           <Button
             onClick={async () => {
-              // await authClient.signOut();
+              await authClientRepo.signOut();
               await queryClient.invalidateQueries({ queryKey: ["user"] });
               await router.invalidate();
             }}
