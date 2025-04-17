@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getWebRequest } from "vinxi/http";
-import { authClientRepo } from "./auth-client-repo";
+// import { authClientRepo } from "./auth-client-repo";
 import { authServerRepo } from "./auth-server-repo";
 
-type Session = typeof authClientRepo.$Infer.Session;
+type Session = typeof authServerRepo.$Infer.Session;
 
 const getSessionFn = createServerFn({
   method: "GET",
@@ -16,9 +16,9 @@ const getSessionFn = createServerFn({
   //     headers,
   //   },
   // });
+  // return session.data || null;
 
   const session = await authServerRepo.api.getSession({ headers });
-
   return session || null;
 });
 
