@@ -1,10 +1,11 @@
 /// <reference types="./types.d.ts" />
 
+import * as path from "node:path";
+import { includeIgnoreFile } from "@eslint/compat";
 import eslint from "@eslint/js";
+import importPlugin from "eslint-plugin-import";
 import eslintConfigPrettier from "eslint-config-prettier";
-import reactCompiler from "eslint-plugin-react-compiler";
-import reactHooks from "eslint-plugin-react-hooks";
-import globals from "globals";
+
 import tseslint from "typescript-eslint";
 
 /**
@@ -38,60 +39,46 @@ export const restrictEnvAccess = tseslint.config(
 );
 
 export default tseslint.config(
+	// Ignore files not tracked by VCS and any config files
+	includeIgnoreFile(path.join(import.meta.dirname, "../../.gitignore")),
+	{ ignores: ["**/*.config.*"] },
 	{
-		ignores: [
-			"dist",
-			".vinxi",
-			".wrangler",
-			".vercel",
-			".netlify",
-			".output",
-			"build/",
-		],
-	},
-	{
-		files: ["**/*.{ts,tsx}"],
+		files: ["**/*.js", "**/*.ts", "**/*.tsx"],
+		plugins: {
+			import: importPlugin,
+		},
 		extends: [
 			eslint.configs.recommended,
-			...tseslint.configs.recommended,
 			eslintConfigPrettier,
-			...pluginQuery.configs["flat/recommended"],
-			...pluginRouter.configs["flat/recommended"],
+			...tseslint.configs.recommended,
+			...tseslint.configs.recommendedTypeChecked,
+			...tseslint.configs.stylisticTypeChecked,
 		],
-	},
-	{
-		files: ["**/*.{ts,tsx}"],
-		languageOptions: {
-			globals: {
-				...globals.browser,
-			},
-		},
-		plugins: {
-			"react-hooks": reactHooks,
-		},
 		rules: {
-			...reactHooks.configs.recommended.rules,
+			"@typescript-eslint/no-unused-vars": [
+				"error",
+				{ argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+			],
+			"@typescript-eslint/consistent-type-imports": [
+				"warn",
+				{ prefer: "type-imports", fixStyle: "separate-type-imports" },
+			],
+			"@typescript-eslint/no-misused-promises": [
+				2,
+				{ checksVoidReturn: { attributes: false } },
+			],
+			"@typescript-eslint/no-unnecessary-condition": [
+				"error",
+				{
+					allowConstantLoopConditions: true,
+				},
+			],
+			"@typescript-eslint/no-non-null-assertion": "error",
+			"import/consistent-type-specifier-style": ["error", "prefer-top-level"],
 		},
 	},
-	reactCompiler.configs.recommended,
 	{
-		files: ["**/*.{ts,tsx}"],
-		languageOptions: {
-			parserOptions: {
-				parser: tseslint.parser,
-				project: "./tsconfig.json",
-				tsconfigRootDir: import.meta.dirname,
-			},
-		},
-		...react.configs["recommended-type-checked"],
-	},
-	{
-		rules: {
-			// You can override any rules here
-			// "@eslint-react/prefer-read-only-props": "off",
-			// "@eslint-react/no-forward-ref": "off",
-			// "@eslint-react/no-context-provider": "off",
-			// "react-compiler/react-compiler": "warn",
-		},
+		linterOptions: { reportUnusedDisableDirectives: true },
+		languageOptions: { parserOptions: { projectService: true } },
 	},
 );

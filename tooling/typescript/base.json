@@ -10,6 +10,9 @@
 		"resolveJsonModule": true,
 		"moduleDetection": "force",
 		"isolatedModules": true,
+		"paths": {
+			"~/*": ["./src/*"]
+		} /* Specify a set of entries that re-map imports to additional lookup locations. */,
 
 		/** Keep TSC performant in monorepos */
 		"incremental": true,
