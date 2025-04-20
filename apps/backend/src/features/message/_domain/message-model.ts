@@ -25,14 +25,35 @@ export const messageResponseModel = t.Object(
 		userId: t.String(),
 		createdAt: t.Date(),
 		updatedAt: t.Date(),
-		user: t.Object({
-			id: t.String(),
-			name: t.String(),
-			email: t.String(),
-			image: t.Optional(t.Nullable(t.String())),
+	},
+	{
+		description: "Message response",
+	},
+);
+
+export const messageUpdateModel = t.Object(
+	{
+		title: t.String({
+			minLength: 1,
+			description: "Message title",
+		}),
+		content: t.String({
+			minLength: 1,
+			description: "Message content",
 		}),
 	},
 	{
-		description: "Message response with user details",
+		description: "Message update payload",
+	},
+);
+
+export const messageIdParam = t.Object(
+	{
+		id: t.String({
+			description: "Message ID",
+		}),
+	},
+	{
+		description: "Message ID parameter",
 	},
 );

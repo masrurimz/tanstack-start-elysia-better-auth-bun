@@ -1,5 +1,7 @@
-import type { User } from "@acme/db/schema";
-import { messageRepository } from "./_lib/message-repository";
+import type { User } from "better-auth";
+import { MessageDrizzleDbRepository } from "./_lib/message-drizzle-db-repo";
+
+const messageRepository = new MessageDrizzleDbRepository();
 
 class MessageService {
 	getAll = async () => {
@@ -55,7 +57,7 @@ class MessageService {
 		if (!user?.id) {
 			throw new Error("Unauthorized");
 		}
-		return await Promise.resolve(user);
+		return user;
 	};
 
 	validateOwnership = async ({

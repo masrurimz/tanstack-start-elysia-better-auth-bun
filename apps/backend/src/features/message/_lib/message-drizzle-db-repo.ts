@@ -30,7 +30,8 @@ export class MessageDrizzleDbRepository implements MessageRepository {
 				content: params.content,
 				userId: params.userId,
 			})
-			.returning();
+			.returning()
+			.then((res) => res[0]);
 	};
 
 	update = async ({ params }: { params: UpdateMessageParams }) => {
@@ -42,10 +43,15 @@ export class MessageDrizzleDbRepository implements MessageRepository {
 				updatedAt: new Date(),
 			})
 			.where(eq(message.id, params.id))
-			.returning();
+			.returning()
+			.then((res) => res[0]);
 	};
 
 	delete = async ({ id }: { id: string }) => {
-		return db.delete(message).where(eq(message.id, id)).returning();
+		return db
+			.delete(message)
+			.where(eq(message.id, id))
+			.returning()
+			.then((res) => res[0]);
 	};
 }

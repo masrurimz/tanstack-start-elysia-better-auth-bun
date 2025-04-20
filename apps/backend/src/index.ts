@@ -7,8 +7,11 @@ import { authService } from "./services/auth-service";
 import { count } from "~/features/count/count-routes";
 import { message } from "~/features/message/message-routes";
 import { pokemon } from "~/features/pokemon/pokemon-routes";
+// import { autoload } from "elysia-autoload";
+import { edenTreaty } from "@elysiajs/eden";
 
 const app = new Elysia()
+	// .use(await autoload())
 	.use(cors())
 	.use(opentelemetry())
 	.use(
@@ -67,6 +70,13 @@ const app = new Elysia()
 	.listen(3001);
 
 export type App = typeof app;
+
+// export const api = edenTreaty<App>("http://localhost:3001", {
+// 	$fetch: {
+// 		credentials: "include",
+// 		mode: "cors",
+// 	},
+// });
 
 export type { Session } from "~/libs/better-auth/session";
 
