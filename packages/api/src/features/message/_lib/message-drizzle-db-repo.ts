@@ -23,7 +23,7 @@ export class MessageDrizzleDbRepository implements MessageRepository {
 	};
 
 	create = async ({ params }: { params: CreateMessageParams }) => {
-		return db
+		const result = await db
 			.insert(message)
 			.values({
 				title: params.title,
@@ -32,10 +32,16 @@ export class MessageDrizzleDbRepository implements MessageRepository {
 			})
 			.returning()
 			.then((res) => res[0]);
+
+		if (!result) {
+			throw new Error("Failed to create message");
+		}
+
+		return result;
 	};
 
 	update = async ({ params }: { params: UpdateMessageParams }) => {
-		return db
+		const result = await db
 			.update(message)
 			.set({
 				title: params.title,
@@ -45,13 +51,25 @@ export class MessageDrizzleDbRepository implements MessageRepository {
 			.where(eq(message.id, params.id))
 			.returning()
 			.then((res) => res[0]);
+
+		if (!result) {
+			throw new Error("Failed to update message");
+		}
+
+		return result;
 	};
 
 	delete = async ({ id }: { id: string }) => {
-		return db
+		const result = await db
 			.delete(message)
 			.where(eq(message.id, id))
 			.returning()
 			.then((res) => res[0]);
+
+		if (!result) {
+			throw new Error("Failed to delete message");
+		}
+
+		return result;
 	};
 }

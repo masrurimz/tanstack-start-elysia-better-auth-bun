@@ -19,6 +19,10 @@ class PokemonService {
 		const [firstId, secondId] = getTwoRandomNumbers(1025);
 		const pair = await pokemonRepository.findById({ ids: [firstId, secondId] });
 
+		if (!pair[0] || !pair[1]) {
+			throw new Error("No Pokemon found");
+		}
+
 		return { pair: [pair[0], pair[1]] };
 	};
 

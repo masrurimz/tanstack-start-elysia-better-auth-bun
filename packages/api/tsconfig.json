@@ -1,0 +1,11 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"compilerOptions": {
+		"paths": {
+			"~/*": ["./src/*"]
+		}
+	},
+	"extends": "@acme/tsconfig/internal-package.json",
+	"include": ["."],
+	"exclude": ["node_modules", "dist", "build", "node_modules"]
+}

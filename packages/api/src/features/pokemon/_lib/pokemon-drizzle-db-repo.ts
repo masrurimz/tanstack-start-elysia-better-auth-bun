@@ -20,7 +20,7 @@ export class PokemonDrizzleDbRepository implements PokemonRepository {
 	};
 
 	createVote = async ({ params }: { params: PokemonVoteParams }) => {
-		return db
+		const voteResult = await db
 			.insert(vote)
 			.values({
 				votedForId: params.votedForId,
@@ -28,6 +28,12 @@ export class PokemonDrizzleDbRepository implements PokemonRepository {
 			})
 			.returning()
 			.then((res) => res[0]);
+
+		if (!voteResult) {
+			throw new Error("Failed to create vote");
+		}
+
+		return voteResult;
 	};
 
 	getResults = async (): Promise<PokemonVote[]> => {
