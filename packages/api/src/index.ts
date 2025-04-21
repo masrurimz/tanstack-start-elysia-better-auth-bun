@@ -69,10 +69,3 @@ export const app = new Elysia()
 export type App = typeof app;
 
 export type { Session } from "~/libs/better-auth/session";
-
-console.log(
-	`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`,
-);
-console.log(
-	`📚 Swagger documentation available at http://${app.server?.hostname}:${app.server?.port}/swagger`,
-);

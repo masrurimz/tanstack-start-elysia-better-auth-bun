@@ -6,5 +6,10 @@
     "paths": {
       "~/*": ["./src/*"]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "../../packages/api"
+    }
+  ]
 }

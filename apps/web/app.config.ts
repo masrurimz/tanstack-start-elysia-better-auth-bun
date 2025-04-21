@@ -10,6 +10,9 @@ export default defineConfig({
       }),
       tailwindcss(),
     ],
+    optimizeDeps: {
+      exclude: ["@tanstack/react-router-devtools", "@tanstack/react-query-devtools"],
+    },
   },
 
   // https://react.dev/learn/react-compiler

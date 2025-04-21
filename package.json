@@ -23,7 +23,7 @@
 		"db:push": "bun run --filter=* db:push",
 		"db:seed": "bun run --filter=* db:seed",
 		"db:studio": "bun run --filter=* db:studio",
-		"clean": "bun run --filter=* clean"
+		"clean": "bun run --filter=* clean && rm -rf .turbo node_modules"
 	},
 	"devDependencies": {
 		"@acme/eslint-config": "workspace:*",

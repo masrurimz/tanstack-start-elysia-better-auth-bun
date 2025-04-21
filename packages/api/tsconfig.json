@@ -3,7 +3,8 @@
 	"compilerOptions": {
 		"paths": {
 			"~/*": ["./src/*"]
-		}
+		},
+		"composite": true
 	},
 	"extends": "@acme/tsconfig/internal-package.json",
 	"include": ["."],

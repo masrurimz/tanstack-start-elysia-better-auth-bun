@@ -10,7 +10,7 @@ import { messageService } from "./message-service";
 
 // Main message router
 export const message = new Elysia({
-	prefix: "/message",
+	prefix: "/messages",
 })
 	.decorate("messageService", messageService)
 	.model({

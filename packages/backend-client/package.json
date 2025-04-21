@@ -14,13 +14,13 @@
 		"clean": "rm -rf .turbo node_modules"
 	},
 	"dependencies": {
+		"@acme/api": "workspace:*",
 		"@acme/eslint-config": "workspace:*",
 		"@acme/prettier-config": "workspace:*",
 		"@acme/tsconfig": "workspace:*",
 		"@elysiajs/eden": "^1.2.0"
 	},
 	"devDependencies": {
-		"@types/bun": "latest",
-		"backend": "workspace:*"
+		"@types/bun": "latest"
 	}
 }

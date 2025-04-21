@@ -1,25 +1,11 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "React Library",
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "lib": ["ES2015"],
-    "module": "ESNext",
-    "target": "es6",
-    "composite": false,
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "inlineSources": false,
-    "isolatedModules": true,
-    "moduleResolution": "node",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "preserveWatchOutput": true,
-    "skipLibCheck": true,
-    "strict": true
-  },
-  "include": ["."],
-  "exclude": ["node_modules", "dist", "build", "node_modules"]
+	"extends": "@acme/tsconfig/internal-package.json",
+	"include": ["src"],
+	"exclude": ["node_modules"],
+	"references": [
+		// Need to fix type alias not working for eden
+		{
+			"path": "../api"
+		}
+	]
 }

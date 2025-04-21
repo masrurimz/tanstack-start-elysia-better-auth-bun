@@ -5,17 +5,16 @@
 	"types": "./src/index.ts",
 	"type": "module",
 	"scripts": {
-		"build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server ./src/index.ts",
 		"build:types": "tsc --project tsconfig.json",
+		"dev": "bun --watch tsc",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "tsc --watch",
 		"with-env": "bun --env-file=../../.env --bun",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"format": "prettier --check .",
 		"format:fix": "prettier --write .",
 		"typecheck": "tsc --noEmit",
-		"clean": "rm -rf .turbo node_modules"
+		"clean": "rm -rf .turbo node_modules dist"
 	},
 	"dependencies": {
 		"@acme/db": "workspace:*",
