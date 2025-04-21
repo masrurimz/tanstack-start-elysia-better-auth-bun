@@ -1,58 +1,56 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CountCard } from "src/features/count/_components/count-card";
-import { countElysiaController } from "src/features/count/_controllers/count-elysia-controller";
+import { CountCard } from "~/features/count/_components/count-card";
+import { countElysiaController } from "~/features/count/_controllers/count-elysia-controller";
+import { elysiaCountQueryOptions } from "~/features/count/_lib/count-elysia-queries";
 
 export const Route = createFileRoute("/count/elysia")({
-	loader: async () => {
-		// Fetch initial count using the controller
-		const count = await countElysiaController.getCount();
-		return { count };
-	},
-	component: ElysiaCountPage,
+  loader: async ({ context }) => {
+    const { count } = await context.queryClient.ensureQueryData(
+      elysiaCountQueryOptions(),
+    );
+    return { count };
+  },
+  component: ElysiaCountPage,
 });
 
 // Component that only displays the count
 function CountDisplay() {
-	const count = countElysiaController.useCountValue();
+  const { data } = countElysiaController.useCount();
 
-	return (
-		<CountCard.Display
-			count={count}
-			description="Counter stored in Elysia backend"
-		/>
-	);
+  return (
+    <CountCard.Display
+      count={data?.count ?? 0}
+      description="Counter stored in Elysia backend using TanStack Query"
+    />
+  );
 }
 
 // Component that handles the actions
 function CountActions() {
-	const isLoading = countElysiaController.useIsLoading();
-	const incrementCount = countElysiaController.useIncrementCount();
-	const refreshCount = countElysiaController.useFetchCount();
+  const { incrementCount, isPending } = countElysiaController.useIncrementCount();
+  const { isPending: isRefetching } = countElysiaController.useCount();
 
-	return (
-		<CountCard.Actions
-			onIncrement={incrementCount}
-			onRefresh={refreshCount}
-			isLoading={isLoading}
-		/>
-	);
+  return (
+    <CountCard.Actions
+      onIncrement={() => incrementCount()}
+      onRefresh={() => window.location.reload()}
+      isLoading={isPending || isRefetching}
+    />
+  );
 }
 
 // Main page component
 function ElysiaCountPage() {
-	const { count: initialCount } = Route.useLoaderData();
-	countElysiaController.useInitializeCount(initialCount);
-
-	return (
-		<div className="container py-10 flex flex-col items-center justify-center min-h-[80vh]">
-			<CountCard>
-				<CountCard.Header
-					title="Elysia Backend Counter"
-					description="Counter implementation using Elysia backend API"
-				/>
-				<CountDisplay />
-				<CountActions />
-			</CountCard>
-		</div>
-	);
+  return (
+    <div className="container py-10 flex flex-col items-center justify-center min-h-[80vh]">
+      <CountCard>
+        <CountCard.Header
+          title="Elysia Backend Counter"
+          description="Counter implementation using Elysia backend API with TanStack Query"
+        />
+        <CountDisplay />
+        <CountActions />
+      </CountCard>
+    </div>
+  );
 }

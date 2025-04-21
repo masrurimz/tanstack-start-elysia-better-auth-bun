@@ -1,91 +1,31 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { atom, useAtomValue, useSetAtom } from "jotai";
-import { useCallback, useEffect } from "react";
-import { countService } from "../_services/count-service";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { countQueryOptions, incrementCountMutationOptions } from "../_lib/count-queries";
+import { tanStackCountRepository } from "../_lib/count-tanstack-serverFn-repo";
 
 class CountTanStackController {
-	// State atoms
-	private countAtom = atom(0);
-	private loadingAtom = atom(false);
+  // Query hook
+  useCount = () => {
+    return useQuery(countQueryOptions);
+  };
 
-	// Route loader method
-	getCount = async () => {
-		return countService.getTanStackCount();
-	};
+  // Mutation hook
+  useIncrementCount = () => {
+    const queryClient = useQueryClient();
+    const { mutate, isPending, error } = useMutation({
+      ...incrementCountMutationOptions,
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: countQueryOptions.queryKey });
+      },
+    });
 
-	// Individual state hooks with single responsibility
-	useCountValue = () => {
-		return useAtomValue(this.countAtom);
-	};
+    return { incrementCount: mutate, isPending, error };
+  };
 
-	useSetCount = () => {
-		return useSetAtom(this.countAtom);
-	};
-
-	useIsLoading = () => {
-		return useAtomValue(this.loadingAtom);
-	};
-
-	useSetIsLoading = () => {
-		return useSetAtom(this.loadingAtom);
-	};
-
-	// Action hooks with single responsibility
-	useFetchCount = () => {
-		const setCount = this.useSetCount();
-		const isLoading = this.useIsLoading();
-		const setIsLoading = this.useSetIsLoading();
-
-		return useCallback(async () => {
-			if (isLoading) return;
-
-			setIsLoading(true);
-			try {
-				const currentCount = await countService.getTanStackCount();
-				setCount(currentCount);
-				return currentCount;
-			} catch (error) {
-				console.error("Failed to fetch count:", error);
-				return null;
-			} finally {
-				setIsLoading(false);
-			}
-		}, [isLoading, setCount, setIsLoading]);
-	};
-
-	useIncrementCount = () => {
-		const isLoading = this.useIsLoading();
-		const setIsLoading = this.useSetIsLoading();
-		const setCount = this.useSetCount();
-
-		return useCallback(async () => {
-			if (isLoading) return;
-
-			setIsLoading(true);
-			try {
-				const newCount = await countService.incrementTanStackCount();
-
-				setCount(newCount);
-			} catch (error) {
-				console.error("Failed to increment count:", error);
-			} finally {
-				setIsLoading(false);
-			}
-		}, [isLoading, setIsLoading, setCount]);
-	};
-
-	// Initialization hook - separate to prevent unnecessary re-renders
-	useInitializeCount = (initialCount?: number) => {
-		const setCount = this.useSetCount();
-
-		useEffect(() => {
-			if (initialCount !== undefined) {
-				setCount(initialCount);
-			} else {
-				void countService.getTanStackCount();
-			}
-		}, [initialCount, setCount]);
-	};
+  // Route loader method
+  getCount = async () => {
+    return tanStackCountRepository.getCount({ signal: undefined });
+  };
 }
 
 export const countTanStackController = new CountTanStackController();

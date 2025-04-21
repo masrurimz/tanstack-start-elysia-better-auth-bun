@@ -1,5 +1,5 @@
 // Count repository interface
 export interface CountRepository {
-	getCount: () => Promise<number>;
-	incrementCount: () => Promise<number>;
+  getCount: ({ signal }: { signal?: AbortSignal }) => Promise<{ count: number }>;
+  incrementCount: () => Promise<{ count: number }>;
 }

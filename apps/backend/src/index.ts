@@ -64,8 +64,15 @@ export const app = new Elysia()
 	.get("health", () => "OK")
 	.use(count) // New implementation
 	.use(pokemon)
-	.use(message);
+	.use(message)
+	.listen(3001);
+
+console.log(
+	`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`,
+);
+console.log(
+	`📚 Swagger documentation available at http://${app.server?.hostname}:${app.server?.port}/swagger`,
+);
 
 export type App = typeof app;
-
 export type { Session } from "~/libs/better-auth/session";
