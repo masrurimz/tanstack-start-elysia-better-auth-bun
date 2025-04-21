@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# State Management
+
+## Jotai Pattern
+
+- Use Jotai for state management when state needs to be shared across components
+- Create atoms in controllers or dedicated state files
+- Use `useAtomValue` for read-only access and `useSetAtom` for write-only access
+- Avoid using `useAtom` when you only need to read or write, not both
+- Expose atoms through controller methods for component consumption
+
+## Reference Files
+
+- Example controllers: [auth-controller.ts](mdc:src/features/auth/_controllers/auth-controller.ts)

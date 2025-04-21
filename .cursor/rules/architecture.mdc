@@ -1,0 +1,83 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Architecture
+
+## Clean Architecture
+
+### Layer Organization
+
+- **Presentation Layer**: Components, Pages, Controllers
+- **Application Layer**: Services, Use Cases
+- **Domain Layer**: Entities, Repository Interfaces, DTOs
+- **Infrastructure Layer**: Repository Implementations, API Clients, Storage
+
+### Component Organization
+
+- Place all shared UI components in `app/components/ui/`
+- Place all layout components in `app/components/layout/`
+- Place all shared utility components in `app/components/shared/`
+- Place feature-specific components in `app/features/feature/_components/`
+- Use consistent import paths starting with `~` (e.g. `import { Button } from "~/components/ui/button";`)
+
+### Domain Layer Organization
+
+- Organize domain files by responsibility:
+  - `*entity.ts` - Core business entities
+  - `*model.ts` - Data transfer objects (DTOs)
+  - `*repository.ts` - Repository interfaces
+  - `*schema.ts` - Validation schemas
+
+## Project Structure
+
+```txt
+apps/
+  web/                      # Frontend application
+    ├── app/
+    │   ├── features/       # Feature modules
+    │   │   └── feature/    # Specific feature
+    │   │       ├── _components/  # Feature-specific components
+    │   │       ├── _controllers/ # Feature-specific controllers
+    │   │       └── _domain/      # Feature-specific domain models
+    │   ├── routes/         # Route definitions
+    │   ├── components/     # Shared UI components
+    │   │   ├── ui/         # UI primitives
+    │   │   ├── layout/     # Layout components
+    │   │   └── shared/     # Shared utility components
+    │   ├── controllers/    # Shared controllers
+    │   ├── domain/         # Shared domain entity, models
+    │   ├── lib/            # Infrastructure layer
+    │   └── services/       # Shared services
+  backend/                  # Elysia backend
+    ├── src/
+    │   ├── features/       # Feature modules
+    │   ├── routes/         # App-level route definitions
+    │   ├── domain/         # Shared domain models
+    │   ├── lib/            # Shared infrastructure
+    │   └── services/       # Shared services
+```
+
+## Controller Pattern (React)
+
+- Use class-based controllers with arrow function methods
+- Use Jotai atoms for state management
+- Provide granular hooks for accessing state and actions
+- All hooks MUST return objects, even for single values (e.g., `return { isPending }` not `return isPending`)
+- All controller data fetchers MUST return objects (e.g., `return { pokemonPair }` not `return pokemonPair`)
+
+## Repository Pattern
+
+- Define repository interfaces in the domain layer as `entity-repository.ts`
+- Implement repositories in feature's `_lib` directory using the pattern: `entity-infrastructure-type-repo.ts`
+  - Example: `user-drizzle-db-repo.ts`, `product-api-repo.ts`, `auth-tanstack-query-repo.ts`
+- Always include both the infrastructure technology and type in the repository implementation filename
+- Use direct imports instead of barrel files for better tree-shaking and build performance
+- Repository implementations should use arrow function methods consistent with class method guidelines
+- All repository methods MUST accept object parameters and return objects
+
+## Reference Files
+
+- Example controllers: [auth-controller.ts](mdc:src/features/auth/_controllers/auth-controller.ts)
+- Example repositories: [auth-tanstack-query-repo.ts](mdc:src/libs/better-auth/auth-client-repo.ts)

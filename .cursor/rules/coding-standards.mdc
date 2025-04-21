@@ -1,0 +1,64 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Coding Standards
+
+## Core Principles
+
+- Write clean, readable code with feature-based organization
+- Keep files small and focused (<200 lines)
+- Use clear, consistent naming and prioritize modularity
+- Always use object as function parameter
+- Always use arrow functions for class methods
+- Always return objects from hooks and async functions
+
+## Code Style
+
+### File Naming & Structure
+
+- Use kebab-case for all file and directory names
+- Organize directories by feature with underscore prefix for feature-specific folders:
+  - `features/feature/_components/`, `features/feature/_controllers/`, etc.
+- Shared components should NOT use underscore prefix:
+  - `components/ui/`, `components/layout/`, `components/shared/`
+
+### Imports & Paths
+
+- Use absolute imports with the `~` prefix for all project files
+- Import UI components from `~/components/ui/*` NOT from `~/ui/*`
+- Always use direct imports instead of barrel (index) files for better tree-shaking
+- Prefer consistent import ordering: React/external libraries first, followed by absolute imports
+
+### TypeScript & React
+
+- Use TypeScript with proper types; prefer interfaces over types for object shapes
+- Implement functional components with TypeScript interfaces for props
+- Use functional and declarative programming patterns
+
+## Hook Design
+
+- Create single-responsibility hooks that return one state or action
+- All hooks MUST return objects even when returning a single value (e.g., `return { isPending }` not `return isPending`)
+- Avoid hooks that return multiple states or actions to prevent unnecessary re-renders
+- Use composition to combine smaller hooks where needed
+
+## Component Design
+
+- Use compound component design pattern for complex components
+- Follow shadcn/ui patterns for component composition
+- Create small, reusable components that can be composed together
+- Isolate re-renders to the smallest possible component
+- All component event handlers should use object parameters (e.g., `onClick={({ id }) => handleClick({ id })}`)
+
+## Component Performance
+
+- Create smaller components that consume only the specific hooks they need
+- Break UI into logical, focused components to isolate re-renders
+
+## Function Returns
+
+- All functions MUST return objects if needed, even for single values (e.g., `return { result }` not `return result`)
+- All hooks MUST return objects, even for single values (e.g., `return { isPending }` not `return isPending`)
+- All controller methods that return data should return objects for destructuring

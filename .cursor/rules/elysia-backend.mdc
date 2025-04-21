@@ -1,0 +1,35 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Elysia Backend Guidelines
+
+## Feature Organization
+
+- Organize code by feature modules with clear boundaries
+- Each feature contains: routes, service, domain models, and repository implementation
+- Use underscore prefix for all feature-specific internal directories
+
+## Controller Pattern (Elysia)
+
+- Use Elysia instances as controllers with method chaining
+- Group related routes using prefixes
+- Include Swagger documentation with the `detail` property
+
+## Service Pattern
+
+- Use class-based services with arrow function methods
+- Keep business logic in services, separate from controllers
+- All service methods MUST accept object parameters and return objects
+
+## Model Definition
+
+- Use Elysia's validation system (`t.Object()`) for models/DTOs
+- Group related models together in `_domain` directory
+
+## Security
+
+- Validate all inputs using Elysia's built-in validation
+- Implement proper authentication with better-auth
+- Use secure headers and proper CORS configuration
