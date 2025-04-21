@@ -99,28 +99,10 @@
         "vite-tsconfig-paths": "^5.1.4",
       },
     },
-    "packages/api": {
-      "name": "@acme/api",
-      "version": "0.0.0",
-      "dependencies": {
-        "@acme/db": "workspace:*",
-        "@acme/eslint-config": "workspace:*",
-        "@acme/prettier-config": "workspace:*",
-        "@elysiajs/cors": "^1.2.0",
-        "@elysiajs/opentelemetry": "^1.2.0",
-        "@elysiajs/swagger": "^1.2.0",
-        "better-auth": "^1.2.7",
-        "elysia": "latest",
-      },
-      "devDependencies": {
-        "bun-types": "latest",
-      },
-    },
     "packages/backend-client": {
       "name": "backend-client",
       "version": "0.0.0",
       "dependencies": {
-        "@acme/api": "workspace:*",
         "@acme/eslint-config": "workspace:*",
         "@acme/prettier-config": "workspace:*",
         "@acme/tsconfig": "workspace:*",
@@ -213,8 +195,6 @@
     "@parcel/watcher",
   ],
   "packages": {
-    "@acme/api": ["@acme/api@workspace:packages/api"],
-
     "@acme/db": ["@acme/db@workspace:packages/db"],
 
     "@acme/eslint-config": ["@acme/eslint-config@workspace:tooling/eslint"],

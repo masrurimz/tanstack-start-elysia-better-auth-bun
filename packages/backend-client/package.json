@@ -14,7 +14,6 @@
 		"clean": "rm -rf .turbo node_modules"
 	},
 	"dependencies": {
-		"@acme/api": "workspace:*",
 		"@acme/eslint-config": "workspace:*",
 		"@acme/prettier-config": "workspace:*",
 		"@acme/tsconfig": "workspace:*",
